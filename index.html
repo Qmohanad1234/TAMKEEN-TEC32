@@ -1950,28 +1950,9 @@ function setInitialLanguage() {
         savedLanguage &&
         translations[savedLanguage]
     ) {
-        // Returning visitor: keep the language they selected manually.
         currentLanguage = savedLanguage;
     } else {
-        // First visit: detect the visitor's browser language.
-        const browserLanguages =
-            navigator.languages && navigator.languages.length
-                ? navigator.languages
-                : [navigator.language || 'en'];
-
-        const supportedLanguages = ['en', 'ar', 'es', 'it'];
-
-        const detectedLanguage =
-            browserLanguages
-                .map(language =>
-                    String(language).toLowerCase().split('-')[0]
-                )
-                .find(language =>
-                    supportedLanguages.includes(language)
-                );
-
-        // English is the fallback when the browser language is unsupported.
-        currentLanguage = detectedLanguage || 'en';
+        currentLanguage = 'en';
     }
 
     const languageSelect =
