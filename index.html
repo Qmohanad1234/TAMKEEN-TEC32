@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';"/>
 <title>Tamkeen Engineering Services</title>
 <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    a:focus-visible, button:focus-visible, select:focus-visible {
+      outline: 3px solid var(--tamkeen-accent-hex, #009999);
+      outline-offset: 2px;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 95px;
+      right: 20px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background-color: var(--tamkeen-primary-hex, #0075C9);
+      color: #fff;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 0.2s ease;
+    }
+    .back-to-top.visible {
+      display: flex;
+    }
     :root {
       --tamkeen-primary-hex: #0075C9;
       --tamkeen-accent-hex: #009999;
@@ -119,14 +148,13 @@
       color: var(--tamkeen-text-hex);
     }
     .mobile-menu-toggle {
-      display: none; /* Hidden by default, shown in media query */
+      display: none;
       font-size: 1.5rem;
       background: none;
       border: none;
       color: var(--tamkeen-primary-hex);
       cursor: pointer;
     }
-
 
     /* Hero Section */
     .hero {
@@ -146,7 +174,6 @@
       margin: 0 auto;
     }
 
-    /* General Section Styling */
     section {
       padding: 60px 0;
     }
@@ -166,7 +193,6 @@
       text-align: center;
     }
 
-    /* Cards (for Services and Why Us) */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -184,7 +210,7 @@
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }
     .card-icon {
-      font-size: 2.5rem; /* Placeholder for icon styling */
+      font-size: 2.5rem;
       color: var(--tamkeen-accent-hex);
       margin-bottom: 15px;
       display: inline-block;
@@ -204,7 +230,6 @@
       margin-bottom: 8px;
     }
 
-    /* Partners Section */
     #brands {
       background-color: var(--tamkeen-bg-light-hex);
     }
@@ -213,7 +238,6 @@
       color: #444;
     }
 
-    /* Contact Section */
     #contact .contact-details p {
       font-size: 1.1rem;
       margin-bottom: 0.75rem;
@@ -237,11 +261,9 @@
         transition: background-color 0.3s;
     }
     .linkedin-button:hover {
-        background-color: #007a7a; /* Darker accent */
+        background-color: #007a7a;
     }
 
-
-    /* Footer */
     footer {
       background-color: var(--tamkeen-primary-hex);
       color: white;
@@ -250,12 +272,11 @@
       font-size: 0.9rem;
     }
 
-    /* WhatsApp Button */
     .whatsapp-fab {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: #25D366; /* WhatsApp Green */
+        background-color: #25D366;
         color: white;
         border-radius: 50%;
         width: 60px;
@@ -263,21 +284,20 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem; /* For emoji/icon */
+        font-size: 1.8rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         cursor: pointer;
         z-index: 1000;
         border: none;
         text-decoration: none;
     }
-    .whatsapp-fab span { /* For text if added */
+    .whatsapp-fab span {
       font-size: 1rem;
       margin-left: 8px;
     }
 
-    /* WhatsApp Dialog */
     .whatsapp-dialog {
-        display: none; /* Hidden by default */
+        display: none;
         position: fixed;
         left: 50%;
         top: 50%;
@@ -321,17 +341,15 @@
         color: #888;
     }
     .dialog-overlay {
-        display: none; /* Hidden by default */
+        display: none;
         position: fixed;
         top: 0; left: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         background-color: rgba(0,0,0,0.5);
         z-index: 1000;
     }
 
-    /* RTL Styling */
     html[dir="rtl"] .nav-links li {
         margin-left: 0;
         margin-right: 20px;
@@ -344,27 +362,25 @@
         padding-left: 0;
         padding-right: 20px;
     }
-    html[dir="rtl"] .linkedin-button span { /* For icon if used */
+    html[dir="rtl"] .linkedin-button span {
         margin-right: 0;
         margin-left: 8px;
     }
 
-
-    /* Responsive adjustments */
     @media (max-width: 768px) {
       .nav-links {
-        display: none; /* Hide links by default on mobile */
+        display: none;
         flex-direction: column;
         width: 100%;
         background-color: var(--tamkeen-white-hex);
         position: absolute;
-        top: 70px; /* Adjust based on navbar height */
+        top: 70px;
         left: 0;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         padding: 10px 0;
       }
       .nav-links.active {
-        display: flex; /* Show when active */
+        display: flex;
       }
       .nav-links li {
         margin: 10px 0;
@@ -394,11 +410,12 @@
         font-size: 1.8rem;
       }
       .card-grid {
-        grid-template-columns: 1fr; /* Stack cards on mobile */
+        grid-template-columns: 1fr;
       }
     }
   </style>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;family=Poppins:wght@600&amp;display=swap" rel="stylesheet"/><style>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet"/>
+<style>
 body {
   font-family: 'Open Sans', sans-serif;
   margin: 0;
@@ -414,7 +431,9 @@ h1, h2, h3 {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
-</style><link href="assets/images/favicon-32x32.png" rel="icon" type="image/x-icon"/><style>
+</style>
+<link href="assets/images/favicon-32x32.png" rel="icon" type="image/x-icon"/>
+<style>
 .lang-dropdown.open {
   display: block !important;
 }
@@ -426,18 +445,24 @@ h1, h2, h3 {
 html, body { margin:0; padding:0; }
 nav { position: fixed; top:0; left:0; width:100%; z-index:9999; }
 .announcement-bar { margin-top: 70px; }
-body { padding-top: 70px; }
 </style>
-
 </head>
-<body><section id="hero-banner" style="position: relative; width: 100%; height: 90vh; overflow: hidden; display: flex; align-items: center; justify-content: center;"><img alt="Banner Background" src="assets/images/banner-engineering.jpg" style="position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; z-index: 1;"/><div class="fade-in" style="position: relative; z-index: 2; text-align: center; color: white; background: rgba(0, 117, 201, 0.6); padding: 40px 60px; border-radius: 16px;"><img alt="Tamkeen Logo" src="assets/images/logo-tamkeen-true-dimensions.png" style="height: 80px; margin-bottom: 20px;"/><h1 data-translate-key="heroTitle">Tamkeen</h1><p data-translate-key="heroSubtitle" style="font-size: 1.2rem; margin-top: 10px;">Empowering Industry Through Innovation</p></div></section>
-<div id="announcement-bar-container">
-<!-- Announcement bar placeholder -->
-<!-- Announcement bar will be injected here by JS if not dismissed -->
+<body>
+<section id="hero-banner" style="position: relative; width: 100%; height: 90vh; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<img alt="Banner Background" src="assets/images/banner-engineering.jpg" style="position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; z-index: 1;"/>
+<div class="fade-in" style="position: relative; z-index: 2; text-align: center; color: white; background: rgba(0, 117, 201, 0.6); padding: 40px 60px; border-radius: 16px;">
+<img alt="Tamkeen Logo" loading="lazy" src="assets/images/logo-tamkeen-true-dimensions.png" style="height: 80px; margin-bottom: 20px;"/>
+<h1 data-translate-key="heroTitle">Tamkeen</h1>
+<p data-translate-key="heroSubtitle" style="font-size: 1.2rem; margin-top: 10px;">Empowering Industry Through Innovation</p>
 </div>
+</section>
+<div id="announcement-bar-container"></div>
 <nav>
 <div class="container">
-<a class="nav-logo" href="#" style="text-decoration: none;"><img alt="Tamkeen Logo" src="assets/images/logo-tamkeen-true-dimensions.png" style="height: 50px; background: transparent; display: block;"/><div style="font-size: 0.75rem; color: #0075C9; text-align: center; font-weight: 600;">Digital Solutions for Industrial Excellence</div></a>
+<a class="nav-logo" href="#" style="text-decoration: none;">
+<img alt="Tamkeen Logo" loading="lazy" src="assets/images/logo-tamkeen-true-dimensions.png" style="height: 50px; background: transparent; display: block;"/>
+<div style="font-size: 0.75rem; color: #0075C9; text-align: center; font-weight: 600;">Digital Solutions for Industrial Excellence</div>
+</a>
 <button class="mobile-menu-toggle" id="mobile-menu-toggle-btn">☰</button>
 <ul class="nav-links" id="nav-links-ul">
 <li><a data-translate-key="navAbout" href="#about">About</a></li>
@@ -450,6 +475,7 @@ body { padding-top: 70px; }
 <option value="en">EN</option>
 <option value="ar">AR</option>
 <option value="es">ES</option>
+<option value="it">IT</option>
 </select>
 </li>
 </ul>
@@ -480,9 +506,7 @@ body { padding-top: 70px; }
 <div class="card">
 <span class="card-icon">🛠️</span>
 <h3 data-translate-key="serviceFieldTitle">Field Services</h3>
-<ul id="serviceFieldItemsList">
-<!-- Items will be populated by JS -->
-</ul>
+<ul id="serviceFieldItemsList"></ul>
 </div>
 <div class="card">
 <span class="card-icon">🎓</span>
@@ -537,22 +561,23 @@ body { padding-top: 70px; }
 <div style="max-width: 800px; margin: 0 auto; background-color: #f9f9f9; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 <h2 class="section-title" data-translate-key="contactTitle">Contact Us</h2>
 <div class="contact-details text-center" style="font-size: 1.05rem; color: #333;">
-<p><strong style="display: inline-block; width: 100px;">Address:</strong> Mecca St., Abraj Makka Bldg., Amman 11821, Jordan</p>
-<p><strong style="display: inline-block; width: 100px;">Email:</strong>
-<a href="mailto:mohannad@tamkeen-tec.com" style="color: #0075C9;">mohannad@tamkeen-tec.com</a>
-</p>
-<p><strong style="display: inline-block; width: 100px;">Phone:</strong> <a href="tel:+962797383980" style="color: #0075C9;">+962 797383980</a></p>
-<p><strong style="display: inline-block; width: 100px;">Website:</strong> <a href="https://www.tamkeen-tec.com" rel="noopener noreferrer" style="color: #0075C9;" target="_blank">www.tamkeen-tec.com</a></p>
-<a class="linkedin-button" href="https://www.linkedin.com/company/tamkeen-engineering/" rel="noopener noreferrer" style="margin-top: 25px; font-size: 1rem; font-weight: 500;" target="_blank"><img alt="LinkedIn" src="assets/images/linkedin-new.png" style="height: 24px; vertical-align: middle; margin-right: 8px;"/><span>Follow us on LinkedIn</span></a>
+<p><strong data-translate-key="contactAddressLabel" style="display: inline-block; width: 100px;">Address:</strong> <span data-translate-key="contactAddressValue">Mecca St., Abraj Makka Bldg., Amman 11821, Jordan</span></p>
+<p><strong data-translate-key="contactEmailLabel" style="display: inline-block; width: 100px;">Email:</strong> <a href="mailto:mohannad@tamkeen-tec.com" style="color: #0075C9;">mohannad@tamkeen-tec.com</a></p>
+<p><strong data-translate-key="contactPhoneLabel" style="display: inline-block; width: 100px;">Phone:</strong> <a href="tel:+962797383980" style="color: #0075C9;">+962 797383980</a></p>
+<p><strong data-translate-key="contactWebsiteLabel" style="display: inline-block; width: 100px;">Website:</strong> <a href="https://www.tamkeen-tec.com" rel="noopener noreferrer" style="color: #0075C9;" target="_blank">www.tamkeen-tec.com</a></p>
+<a class="linkedin-button" href="https://www.linkedin.com/company/tamkeen-engineering/" rel="noopener noreferrer" style="margin-top: 25px; font-size: 1rem; font-weight: 500;" target="_blank">
+<img alt="LinkedIn" loading="lazy" src="assets/images/linkedin-new.png" style="height: 24px; vertical-align: middle; margin-right: 8px;"/><span data-translate-key="contactLinkedIn">Follow us on LinkedIn</span>
+</a>
 </div>
 </div>
-</div></section>
+</div>
+</section>
 <footer>
 <div class="container">
 <p>© <span id="currentYear">2024</span> <span data-translate-key="footerRights">Tamkeen Engineering Services | All rights reserved</span></p>
 </div>
 </footer>
-<button aria-label="Chat on WhatsApp" class="whatsapp-fab" id="whatsapp-fab-button" onmouseout="this.style.transform='scale(1)'" onmouseover="this.style.transform='scale(1.05)'" style="
+<button aria-label="Chat on WhatsApp" class="whatsapp-fab" id="whatsapp-fab-button" style="
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -580,15 +605,12 @@ body { padding-top: 70px; }
           Chat on WhatsApp
       </a>
 </div>
+<button aria-label="Back to top" class="back-to-top" id="back-to-top-button">↑</button>
 <script>
     const translations = {
       en: {
         metaTitle: "Tamkeen Engineering Services - Automation & Training",
-        navAbout: "About",
-        navServices: "Services",
-        navPartners: "Partners",
-        navWhyUs: "Why Us",
-        navContact: "Contact",
+        navAbout: "About", navServices: "Services", navPartners: "Partners", navWhyUs: "Why Us", navContact: "Contact",
         heroTitle: "Tamkeen Engineering Services",
         heroSubtitle: "Advanced Automation, SCADA, IoT, and Training Solutions Since 2010",
         aboutTitle: "About Us",
@@ -608,11 +630,7 @@ body { padding-top: 70px; }
         serviceSparePartsTitle: "Spare Parts Supply",
         serviceSparePartsDesc: "Genuine industrial and electrical spare parts from Siemens, ABB, Rockwell, and more — delivered reliably.",
         serviceFieldTitle: "Field Services",
-        serviceFieldItems: [
-          'On-site installation, calibration & maintenance',
-          'Control upgrades & troubleshooting',
-          'Instrumentation and cabling',
-        ],
+        serviceFieldItems: ['On-site installation, calibration & maintenance','Control upgrades & troubleshooting','Instrumentation and cabling'],
         serviceTrainingTitle: "PLC & IoT Training",
         serviceTrainingDesc: "Courses covering Siemens S7-1200, S7-300, Allen-Bradley, and IoT. Languages include Ladder, ST, FBD, SFC.",
         serviceRpaTitle: "Robotic Process Automation (RPA)",
@@ -620,14 +638,12 @@ body { padding-top: 70px; }
         serviceVisionTitle: "Machine Vision Solutions",
         serviceVisionDesc: "AI-enhanced cameras and vision systems for defect detection, object recognition, and robotic guidance.",
         contactTitle: "Contact Us",
-        contactAddressLabel: "Address:",
-        contactEmailLabel: "Email:",
-        contactPhoneLabel: "Phone:",
-        contactWebsiteLabel: "Website:",
+        contactAddressLabel: "Address:", contactEmailLabel: "Email:", contactPhoneLabel: "Phone:", contactWebsiteLabel: "Website:",
+        contactAddressValue: "Mecca St., Abraj Makka Bldg., Amman 11821, Jordan",
         contactLinkedIn: "Follow us on LinkedIn",
         footerRights: "Tamkeen Engineering Services | All rights reserved",
         announcementPart1: "New Training Courses!",
-        announcementLink: "Ask about our hands-on & online training: Siemens PLC, SCADA & Industrial Communication Protocols.",
+        announcementLink: "Hands-on PLC & SCADA training starts 30/8/2026 — ask about our Siemens PLC, SCADA & Industrial Communication Protocols courses.",
         announcementPart2: "",
         whatsappFabLabel: "Chat on WhatsApp",
         whatsappDialogTitle: "Chat with us on WhatsApp",
@@ -636,11 +652,7 @@ body { padding-top: 70px; }
       },
       ar: {
         metaTitle: "تمكين للخدمات الهندسية - أتمتة وتدريب",
-        navAbout: "عنا",
-        navServices: "خدماتنا",
-        navPartners: "شركاؤنا",
-        navWhyUs: "لماذا نحن",
-        navContact: "اتصل بنا",
+        navAbout: "عنا", navServices: "خدماتنا", navPartners: "شركاؤنا", navWhyUs: "لماذا نحن", navContact: "اتصل بنا",
         heroTitle: "تمكين للخدمات الهندسية",
         heroSubtitle: "حلول متقدمة في الأتمتة، سكادا، إنترنت الأشياء، والتدريب منذ 2010",
         aboutTitle: "عنا",
@@ -660,11 +672,7 @@ body { padding-top: 70px; }
         serviceSparePartsTitle: "توريد قطع الغيار",
         serviceSparePartsDesc: "قطع غيار صناعية وكهربائية أصلية من سيمنز، إيه بي بي، روكويل، وغيرها - يتم تسليمها بشكل موثوق.",
         serviceFieldTitle: "الخدمات الميدانية",
-        serviceFieldItems: [
-          'التركيب والمعايرة والصيانة في الموقع',
-          'ترقيات أنظمة التحكم واستكشاف الأخطاء وإصلاحها',
-          'الأجهزة والكابلات',
-        ],
+        serviceFieldItems: ['التركيب والمعايرة والصيانة في الموقع','ترقيات أنظمة التحكم واستكشاف الأخطاء وإصلاحها','الأجهزة والكابلات'],
         serviceTrainingTitle: "دورات تدريبية في PLC وإنترنت الأشياء",
         serviceTrainingDesc: "دورات تغطي سيمنز S7-1200 و S7-300 وألين برادلي وإنترنت الأشياء. تشمل اللغات Ladder و ST و FBD و SFC.",
         serviceRpaTitle: "أتمتة العمليات الروبوتية (RPA)",
@@ -672,14 +680,12 @@ body { padding-top: 70px; }
         serviceVisionTitle: "حلول الرؤية الآلية",
         serviceVisionDesc: "كاميرات وأنظمة رؤية معززة بالذكاء الاصطناعي للكشف عن العيوب والتعرف على الأشياء وتوجيه الروبوتات.",
         contactTitle: "اتصل بنا",
-        contactAddressLabel: "العنوان:",
-        contactEmailLabel: "البريد الإلكتروني:",
-        contactPhoneLabel: "الهاتف:",
-        contactWebsiteLabel: "الموقع الإلكتروني:",
+        contactAddressLabel: "العنوان:", contactEmailLabel: "البريد الإلكتروني:", contactPhoneLabel: "الهاتف:", contactWebsiteLabel: "الموقع الإلكتروني:",
+        contactAddressValue: "شارع مكة، برج مكة، عمان 11821، الأردن",
         contactLinkedIn: "تابعنا على لينكد إن",
         footerRights: "تمكين للخدمات الهندسية | جميع الحقوق محفوظة",
         announcementPart1: "دورات تدريبية جديدة!",
-        announcementLink: "استفسر عن دوراتنا التدريبية العملية وعبر الإنترنت: سيمنز PLC، سكادا وبروتوكولات الاتصالات الصناعية.",
+        announcementLink: "تبدأ الدورة التدريبية العملية في PLC و SCADA بتاريخ 30/8/2026 - استفسر عن دوراتنا: سيمنز PLC، سكادا وبروتوكولات الاتصالات الصناعية.",
         announcementPart2: "",
         whatsappFabLabel: "الدردشة عبر واتساب",
         whatsappDialogTitle: "تحدث معنا عبر واتساب",
@@ -688,11 +694,7 @@ body { padding-top: 70px; }
       },
       es: {
         metaTitle: "Tamkeen Servicios de Ingeniería - Automatización y Capacitación",
-        navAbout: "Nosotros",
-        navServices: "Servicios",
-        navPartners: "Socios",
-        navWhyUs: "Por qué nosotros",
-        navContact: "Contacto",
+        navAbout: "Nosotros", navServices: "Servicios", navPartners: "Socios", navWhyUs: "Por qué nosotros", navContact: "Contacto",
         heroTitle: "Tamkeen Servicios de Ingeniería",
         heroSubtitle: "Soluciones Avanzadas de Automatización, SCADA, IoT y Capacitación desde 2010",
         aboutTitle: "Sobre Nosotros",
@@ -712,11 +714,7 @@ body { padding-top: 70px; }
         serviceSparePartsTitle: "Suministro de Repuestos",
         serviceSparePartsDesc: "Repuestos industriales y eléctricos originales de Siemens, ABB, Rockwell y más, entregados de manera confiable.",
         serviceFieldTitle: "Servicios de Campo",
-        serviceFieldItems: [
-          'Instalación, calibración y mantenimiento in situ',
-          'Actualizaciones de control y resolución de problemas',
-          'Instrumentación y cableado',
-        ],
+        serviceFieldItems: ['Instalación, calibración y mantenimiento in situ','Actualizaciones de control y resolución de problemas','Instrumentación y cableado'],
         serviceTrainingTitle: "Capacitación en PLC e IoT",
         serviceTrainingDesc: "Cursos que cubren Siemens S7-1200, S7-300, Allen-Bradley e IoT. Los lenguajes incluyen Ladder, ST, FBD, SFC.",
         serviceRpaTitle: "Automatización Robótica de Procesos (RPA)",
@@ -724,19 +722,59 @@ body { padding-top: 70px; }
         serviceVisionTitle: "Soluciones de Visión Artificial",
         serviceVisionDesc: "Cámaras y sistemas de visión mejorados con IA para detección de defectos, reconocimiento de objetos y guía robótica.",
         contactTitle: "Contáctenos",
-        contactAddressLabel: "Dirección:",
-        contactEmailLabel: "Correo Electrónico:",
-        contactPhoneLabel: "Teléfono:",
-        contactWebsiteLabel: "Sitio Web:",
+        contactAddressLabel: "Dirección:", contactEmailLabel: "Correo Electrónico:", contactPhoneLabel: "Teléfono:", contactWebsiteLabel: "Sitio Web:",
+        contactAddressValue: "Calle Mecca, Edificio Abraj Makka, Ammán 11821, Jordania",
         contactLinkedIn: "Síganos en LinkedIn",
         footerRights: "Tamkeen Servicios de Ingeniería | Todos los derechos reservados",
         announcementPart1: "¡Nuevos Cursos de Formación!",
-        announcementLink: "Pregunte por nuestra formación práctica y online: PLC Siemens, SCADA y Protocolos de Comunicación Industrial.",
+        announcementLink: "La formación práctica en PLC y SCADA comienza el 30/8/2026 — pregunte por nuestros cursos de PLC Siemens, SCADA y Protocolos de Comunicación Industrial.",
         announcementPart2: "",
         whatsappFabLabel: "Chatear por WhatsApp",
         whatsappDialogTitle: "Chatea con nosotros en WhatsApp",
         whatsappDialogDescription: "¿Tienes preguntas o necesitas soporte? Estamos aquí para ayudarte. Toca el botón de abajo para iniciar un chat con nuestro equipo.",
         whatsappDialogButtonText: "Chatear por WhatsApp",
+      },
+      it: {
+        metaTitle: "Tamkeen Engineering Services - Automazione e Formazione",
+        navAbout: "Chi siamo", navServices: "Servizi", navPartners: "Partner", navWhyUs: "Perché noi", navContact: "Contatti",
+        heroTitle: "Tamkeen Engineering Services",
+        heroSubtitle: "Soluzioni Avanzate di Automazione, SCADA, IoT e Formazione dal 2010",
+        aboutTitle: "Chi Siamo",
+        aboutText: "Fondata nel 2010 ad Amman, Giordania, Tamkeen Engineering Services è leader globale nella fornitura di soluzioni avanzate di automazione, ingegneria dei processi e formazione professionale. Diamo forza alle industrie attraverso tecnologie innovative, ingegneria su misura e trasferimento di conoscenze.",
+        partnersTitle: "I Nostri Partner Tecnologici",
+        partnersText: "Siemens, ABB, Schneider Electric, Rockwell Automation, Mitsubishi Electric, Omron, Bosch Rexroth, Honeywell, Emerson, Fanuc, Yaskawa, GE Automation, Danfoss, WEG",
+        whyUsTitle: "Perché Sceglierci",
+        whyUsExpertiseTitle: "Competenza Certificata",
+        whyUsExpertiseText: "Siamo certificati sulle piattaforme Siemens, ABB e Schneider con oltre dieci anni di esperienza sul campo.",
+        whyUsGlobalTitle: "Presenza Globale",
+        whyUsGlobalText: "Serviamo industrie in tutta la regione MENA e in Europa con soluzioni scalabili e supporto multilingue.",
+        whyUsSecureTitle: "Sostenibile e Sicuro",
+        whyUsSecureText: "Ci concentriamo sull'efficienza, la gestione dell'energia e la sicurezza informatica negli ambienti industriali.",
+        servicesTitle: "I Nostri Servizi",
+        serviceAutomationTitle: "Soluzioni di Automazione Industriale",
+        serviceAutomationDesc: "Sistemi chiavi in mano che integrano PLC, HMI, SCADA e MIS per massimizzare l'efficienza operativa e i tempi di attività.",
+        serviceSparePartsTitle: "Fornitura di Ricambi",
+        serviceSparePartsDesc: "Ricambi industriali ed elettrici originali di Siemens, ABB, Rockwell e altri, consegnati in modo affidabile.",
+        serviceFieldTitle: "Servizi sul Campo",
+        serviceFieldItems: ['Installazione, calibrazione e manutenzione in loco','Aggiornamenti dei sistemi di controllo e risoluzione dei problemi','Strumentazione e cablaggio'],
+        serviceTrainingTitle: "Formazione PLC e IoT",
+        serviceTrainingDesc: "Corsi che coprono Siemens S7-1200, S7-300, Allen-Bradley e IoT. I linguaggi includono Ladder, ST, FBD, SFC.",
+        serviceRpaTitle: "Automazione Robotica dei Processi (RPA)",
+        serviceRpaDesc: "Automazione intelligente dei processi aziendali tramite robot e logica intelligente, migliorando coerenza e velocità.",
+        serviceVisionTitle: "Soluzioni di Visione Artificiale",
+        serviceVisionDesc: "Telecamere e sistemi di visione potenziati dall'IA per il rilevamento di difetti, il riconoscimento di oggetti e la guida robotica.",
+        contactTitle: "Contattaci",
+        contactAddressLabel: "Indirizzo:", contactEmailLabel: "Email:", contactPhoneLabel: "Telefono:", contactWebsiteLabel: "Sito Web:",
+        contactAddressValue: "Via Mecca, Edificio Abraj Makka, Amman 11821, Giordania",
+        contactLinkedIn: "Seguici su LinkedIn",
+        footerRights: "Tamkeen Engineering Services | Tutti i diritti riservati",
+        announcementPart1: "Nuovi Corsi di Formazione!",
+        announcementLink: "La formazione pratica su PLC e SCADA inizia il 30/8/2026 — chiedi informazioni sui nostri corsi Siemens PLC, SCADA e Protocolli di Comunicazione Industriale.",
+        announcementPart2: "",
+        whatsappFabLabel: "Chatta su WhatsApp",
+        whatsappDialogTitle: "Chatta con noi su WhatsApp",
+        whatsappDialogDescription: "Hai domande o hai bisogno di supporto? Siamo qui per aiutarti. Tocca il pulsante qui sotto per iniziare una chat con il nostro team.",
+        whatsappDialogButtonText: "Chatta su WhatsApp",
       },
     };
 
@@ -744,42 +782,38 @@ body { padding-top: 70px; }
     const ANNOUNCEMENT_STORAGE_KEY_HTML = 'tamkeenAnnouncementDismissed_standalone_v1';
     const WHATSAPP_PHONE_NUMBER_HTML = '+962797383980';
 
-
     function updateTextContent() {
       const langData = translations[currentLanguage] || translations.en;
       document.querySelectorAll('[data-translate-key]').forEach(element => {
         const key = element.getAttribute('data-translate-key');
         if (key && langData[key]) {
           if (typeof langData[key] === 'string') {
-            element.innerHTML = langData[key]; // Use innerHTML to render potential formatting
+            element.textContent = langData[key];
           }
         }
       });
 
-      // Special handling for serviceFieldItems
       const serviceFieldItemsList = document.getElementById('serviceFieldItemsList');
       if (serviceFieldItemsList && langData.serviceFieldItems && Array.isArray(langData.serviceFieldItems)) {
-        serviceFieldItemsList.innerHTML = ''; // Clear existing items
+        serviceFieldItemsList.innerHTML = '';
         langData.serviceFieldItems.forEach(itemText => {
           const li = document.createElement('li');
           li.textContent = itemText;
           serviceFieldItemsList.appendChild(li);
         });
       }
-      
+
       document.title = langData.metaTitle || "Tamkeen Engineering Services";
       document.documentElement.lang = currentLanguage;
       document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
     }
 
-    
     function setInitialLanguage() {
       currentLanguage = 'en';
       document.getElementById('language-select').value = currentLanguage;
       updateTextContent();
     }
-    
-    
+
     function setupAnnouncementBar() {
         const announcementContainer = document.getElementById('announcement-bar-container');
         if (localStorage.getItem(ANNOUNCEMENT_STORAGE_KEY_HTML) === 'true') {
@@ -790,19 +824,19 @@ body { padding-top: 70px; }
         const langData = translations[currentLanguage] || translations.en;
         const bar = document.createElement('div');
         bar.className = 'announcement-bar';
-        
+
         const megaphoneIcon = document.createElement('span');
-        megaphoneIcon.textContent = '📣 '; // Simple emoji icon
+        megaphoneIcon.textContent = '📣 ';
         megaphoneIcon.style.marginRight = '8px';
 
         const textPart1 = document.createElement('span');
         textPart1.style.fontWeight = 'bold';
         textPart1.textContent = langData.announcementPart1 || '';
-        
+
         const link = document.createElement('a');
         link.href = '#services';
         link.textContent = langData.announcementLink || '';
-        
+
         const textPart2 = document.createElement('span');
         textPart2.textContent = langData.announcementPart2 || '';
 
@@ -820,20 +854,18 @@ body { padding-top: 70px; }
         bar.appendChild(link);
         bar.appendChild(textPart2);
         bar.appendChild(dismissButton);
-        
+
         if(announcementContainer) announcementContainer.appendChild(bar);
-        // Adjust sticky navbar top position if announcement bar is visible
         const navElement = document.querySelector('nav');
         if (navElement && announcementContainer && announcementContainer.style.display !== 'none') {
             const announcementBarHeight = bar.offsetHeight;
             navElement.style.top = announcementBarHeight + 'px';
-            document.documentElement.style.scrollPaddingTop = (announcementBarHeight + 70) + 'px'; // nav height + padding
+            document.documentElement.style.scrollPaddingTop = (announcementBarHeight + 70) + 'px';
         } else if (navElement) {
             navElement.style.top = '0px';
             document.documentElement.style.scrollPaddingTop = '70px';
         }
     }
-
 
     document.addEventListener('DOMContentLoaded', () => {
       setInitialLanguage();
@@ -843,15 +875,13 @@ body { padding-top: 70px; }
         currentLanguage = event.target.value;
         localStorage.setItem('tamkeen-lang-standalone', currentLanguage);
         updateTextContent();
-        // Re-setup announcement bar to get new text if language changes
         const announcementContainer = document.getElementById('announcement-bar-container');
-        if(announcementContainer) announcementContainer.innerHTML = ''; // Clear old bar
-        setupAnnouncementBar(); 
+        if(announcementContainer) announcementContainer.innerHTML = '';
+        setupAnnouncementBar();
       });
-      
+
       document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-      // Mobile menu toggle
       const menuToggle = document.getElementById('mobile-menu-toggle-btn');
       const navLinksUl = document.getElementById('nav-links-ul');
       if(menuToggle && navLinksUl) {
@@ -859,7 +889,6 @@ body { padding-top: 70px; }
               navLinksUl.classList.toggle('active');
           });
       }
-      // Close mobile menu when a link is clicked
       document.querySelectorAll('#nav-links-ul a').forEach(link => {
         link.addEventListener('click', () => {
           if (navLinksUl && navLinksUl.classList.contains('active')) {
@@ -868,7 +897,26 @@ body { padding-top: 70px; }
         });
       });
 
-      // WhatsApp Dialog
+      const backToTopBtn = document.getElementById('back-to-top-button');
+      if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 400) {
+            backToTopBtn.classList.add('visible');
+          } else {
+            backToTopBtn.classList.remove('visible');
+          }
+        });
+        backToTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      const fabButtonHover = document.getElementById('whatsapp-fab-button');
+      if (fabButtonHover) {
+        fabButtonHover.addEventListener('mouseover', () => { fabButtonHover.style.transform = 'scale(1.05)'; });
+        fabButtonHover.addEventListener('mouseout', () => { fabButtonHover.style.transform = 'scale(1)'; });
+      }
+
       const fabButton = document.getElementById('whatsapp-fab-button');
       const dialogBox = document.getElementById('whatsapp-dialog-box');
       const dialogOverlay = document.getElementById('whatsapp-dialog-overlay');
@@ -881,7 +929,6 @@ body { padding-top: 70px; }
         dialogLink.href = `https://wa.me/${WHATSAPP_PHONE_NUMBER_HTML}?text=${encodeURIComponent(prefillText)}`;
         fabButton.setAttribute('aria-label', langData.whatsappFabLabel || 'Chat on WhatsApp');
 
-
         fabButton.addEventListener('click', () => {
             dialogBox.style.display = 'block';
             dialogOverlay.style.display = 'block';
@@ -893,36 +940,34 @@ body { padding-top: 70px; }
         dialogCloseBtn.addEventListener('click', closeDialog);
         dialogOverlay.addEventListener('click', closeDialog);
       }
-       // Adjust sticky navbar and scroll padding based on announcement bar visibility on load and resize
-        const adjustStickyNav = () => {
-            const announcementContainer = document.getElementById('announcement-bar-container');
-            const navElement = document.querySelector('nav');
-            if (!navElement || !announcementContainer) return;
 
-            const isAnnouncementVisible = announcementContainer.style.display !== 'none' && announcementContainer.firstChild;
-            
-            if (isAnnouncementVisible) {
-                const announcementBarHeight = announcementContainer.offsetHeight;
-                navElement.style.top = announcementBarHeight + 'px';
-                document.documentElement.style.scrollPaddingTop = (announcementBarHeight + navElement.offsetHeight + 10) + 'px';
-            } else {
-                navElement.style.top = '0px';
-                document.documentElement.style.scrollPaddingTop = (navElement.offsetHeight + 10) + 'px';
-            }
-        };
-        adjustStickyNav(); // Initial adjustment
-        window.addEventListener('resize', adjustStickyNav); // Adjust on resize
+      const adjustStickyNav = () => {
+          const announcementContainer = document.getElementById('announcement-bar-container');
+          const navElement = document.querySelector('nav');
+          if (!navElement || !announcementContainer) return;
 
-        // Update scroll-padding-top when announcement is dismissed
-        const originalDismissButton = document.querySelector('.announcement-dismiss');
-        if (originalDismissButton) {
-            originalDismissButton.addEventListener('click', () => {
-                setTimeout(adjustStickyNav, 50); // Allow DOM to update
-            });
-        }
+          const isAnnouncementVisible = announcementContainer.style.display !== 'none' && announcementContainer.firstChild;
+
+          if (isAnnouncementVisible) {
+              const announcementBarHeight = announcementContainer.offsetHeight;
+              navElement.style.top = announcementBarHeight + 'px';
+              document.documentElement.style.scrollPaddingTop = (announcementBarHeight + navElement.offsetHeight + 10) + 'px';
+          } else {
+              navElement.style.top = '0px';
+              document.documentElement.style.scrollPaddingTop = (navElement.offsetHeight + 10) + 'px';
+          }
+      };
+      adjustStickyNav();
+      window.addEventListener('resize', adjustStickyNav);
+
+      const originalDismissButton = document.querySelector('.announcement-dismiss');
+      if (originalDismissButton) {
+          originalDismissButton.addEventListener('click', () => {
+              setTimeout(adjustStickyNav, 50);
+          });
+      }
     });
   </script>
-<!-- Announcement Modal -->
 <div id="announcement-modal" style="
   position: fixed;
   top: 50%;
@@ -941,9 +986,9 @@ body { padding-top: 70px; }
 ">
 <p style="margin-bottom: 1rem;">
     📣 <strong>New Training Available!</strong><br/>
-    Ask about our hands-on Siemens PLC and IoT programs.
+    Hands-on PLC &amp; SCADA training starts 30/8/2026 — ask about our Siemens PLC and IoT programs.
   </p>
-<button onclick="document.getElementById('announcement-modal').style.display='none'" style="
+<button id="announcement-modal-close-btn" style="
     background-color: #0075C9;
     color: white;
     padding: 0.5rem 1rem;
@@ -955,13 +1000,13 @@ body { padding-top: 70px; }
 </div>
 <script>
   window.addEventListener('load', function () {
-    const dismissed = localStorage.getItem('tamkeen_announcement_dismissed');
-    if (!dismissed) {
-      const modal = document.getElementById('announcement-modal');
-      modal.style.display = 'block';
-      modal.querySelector('button').addEventListener('click', () => {
+    // Popup now shows on every visit (dismissal is no longer remembered)
+    const modal = document.getElementById('announcement-modal');
+    modal.style.display = 'block';
+    const closeBtn = document.getElementById('announcement-modal-close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
-        localStorage.setItem('tamkeen_announcement_dismissed', 'true');
       });
     }
   });
@@ -982,7 +1027,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    // Optional: Add a close button for mobile dropdowns
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '×';
     closeBtn.className = 'close-dropdown';
@@ -995,5 +1039,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-</script></body>
+</script>
+</body>
 </html>
