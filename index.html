@@ -652,15 +652,17 @@ html[dir="rtl"] .card ul {
         max-width: 100%;
     }
 
+    /* ===== FIXED: WhatsApp floating icon no longer cut off on mobile ===== */
     .whatsapp-fab {
-        right: 15px;
-        bottom: 15px;
-        min-width: 0;
-        width: 58px;
-        height: 58px;
-        padding: 0;
-        border-radius: 50%;
-        justify-content: center;
+        right: 15px !important;
+        bottom: 15px !important;
+        left: auto !important;
+        min-width: 0 !important;
+        width: 58px !important;
+        height: 58px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        justify-content: center !important;
     }
 
     .whatsapp-fab span:last-child {
@@ -2140,32 +2142,19 @@ function adjustStickyNav() {
         announcementContainer.style.display !== 'none' &&
         announcementContainer.firstChild;
 
-    if (isAnnouncementVisible) {
+    navElement.style.top =
+        '0px';
 
-        const announcementBarHeight =
-            announcementContainer.offsetHeight;
-
-        navElement.style.top =
-            announcementBarHeight + 'px';
-
-        document.documentElement.style.scrollPaddingTop =
+    document.documentElement.style.scrollPaddingTop =
+        (
+            navElement.offsetHeight +
             (
-                announcementBarHeight +
-                navElement.offsetHeight +
-                10
-            ) + 'px';
-
-    } else {
-
-        navElement.style.top =
-            '0px';
-
-        document.documentElement.style.scrollPaddingTop =
-            (
-                navElement.offsetHeight +
-                10
-            ) + 'px';
-    }
+                isAnnouncementVisible
+                    ? announcementContainer.offsetHeight
+                    : 0
+            ) +
+            10
+        ) + 'px';
 }
 
 /* =========================
@@ -2235,11 +2224,6 @@ document.addEventListener(
 
         /* =====================
            LANGUAGE SELECT
-           
-           IMPORTANT:
-           Selecting a language
-           immediately closes
-           the mobile menu.
         ===================== */
 
         const languageSelect =
@@ -2263,10 +2247,6 @@ document.addEventListener(
 
                     updateTextContent();
 
-                    /*
-                     * CLOSE MOBILE MENU
-                     * AFTER LANGUAGE SELECTION
-                     */
                     closeMobileMenu();
 
                     const announcementContainer =
@@ -2446,11 +2426,6 @@ document.addEventListener(
             'resize',
             () => {
 
-                /*
-                 * If screen changes from
-                 * mobile to desktop,
-                 * close the mobile menu.
-                 */
                 if (
                     window.innerWidth > 768
                 ) {
