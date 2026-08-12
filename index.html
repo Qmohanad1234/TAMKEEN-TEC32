@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io; frame-ancestors 'none';"/>
 <title>Tamkeen Engineering Services</title>
 
 <!-- SEO -->
@@ -28,11 +28,42 @@
 <meta name="twitter:description" content="Advanced automation, SCADA, IoT and PLC training solutions since 2010. Serving industries across MENA and Europe."/>
 <meta name="twitter:image" content="https://www.tamkeen-tec.com/assets/images/banner-engineering.jpg"/>
 
+<meta name="theme-color" content="#0075C9"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet"/>
 <!-- Google Search / Browser favicon -->
 <link href="assets/images/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
 <link href="assets/images/favicon.ico" rel="icon" type="image/x-icon"/>
 <link href="assets/images/favicon.png" rel="apple-touch-icon" sizes="180x180"/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Tamkeen Engineering Services",
+  "alternateName": "Tamkeen",
+  "url": "https://www.tamkeen-tec.com",
+  "logo": "https://www.tamkeen-tec.com/assets/images/logo-tamkeen-true-dimensions.png",
+  "image": "https://www.tamkeen-tec.com/assets/images/banner-engineering.jpg",
+  "description": "Industrial automation, PLC/SCADA integration, spare parts supply, machine vision, RPA, and hands-on PLC & IoT training since 2010.",
+  "email": "mohannad@tamkeen-tec.com",
+  "telephone": "+962797383980",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Mecca St., Abraj Makka Bldg.",
+    "addressLocality": "Amman",
+    "postalCode": "11821",
+    "addressCountry": "JO"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/tamkeen-engineering/"
+  ],
+  "foundingDate": "2010",
+  "areaServed": ["Middle East", "North Africa", "Europe"]
+}
+</script>
 
 <style>
 html {
@@ -79,6 +110,27 @@ button:focus-visible,
 select:focus-visible {
     outline: 3px solid var(--tamkeen-accent-hex);
     outline-offset: 2px;
+}
+
+/* =========================
+   SKIP LINK (accessibility)
+========================= */
+
+.skip-to-content {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100000;
+    background-color: var(--tamkeen-primary-hex);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 0 0 8px 0;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.skip-to-content:focus {
+    left: 0;
 }
 
 .container {
@@ -946,6 +998,8 @@ html[dir="rtl"] .card ul {
 
 <body>
 
+<a class="skip-to-content" href="#about">Skip to main content</a>
+
 <!-- =========================
      HERO
 ========================= -->
@@ -1062,7 +1116,7 @@ type="button"
      ABOUT
 ========================= -->
 
-<section id="about">
+<section id="about" tabindex="-1" aria-label="Main content">
 
 <div class="container">
 
