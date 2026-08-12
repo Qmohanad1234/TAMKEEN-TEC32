@@ -77,6 +77,8 @@ select:focus-visible {
     text-align: center;
     position: relative;
     font-size: 0.9rem;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .announcement-bar p {
@@ -93,6 +95,38 @@ select:focus-visible {
 
 .announcement-bar a:hover {
     text-decoration: none;
+}
+
+/* Moving/scrolling text track */
+.announcement-scroll {
+    display: inline-block;
+    padding-left: 100%;
+    white-space: nowrap;
+    animation: announcement-marquee 22s linear infinite;
+    will-change: transform;
+}
+
+@keyframes announcement-marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Pause on hover/focus so people can read & click it */
+.announcement-bar:hover .announcement-scroll,
+.announcement-bar:focus-within .announcement-scroll {
+    animation-play-state: paused;
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .announcement-scroll {
+        animation: none;
+        padding-left: 0;
+    }
 }
 
 .announcement-dismiss {
@@ -313,6 +347,107 @@ section {
 }
 
 /* =========================
+   BRANDS TICKER (moving logo shapes)
+========================= */
+
+.brands-ticker {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    direction: ltr;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 40px,
+        black calc(100% - 40px),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        black 40px,
+        black calc(100% - 40px),
+        transparent 100%
+    );
+}
+
+.brands-track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    animation: brands-scroll 35s linear infinite;
+    will-change: transform;
+}
+
+.brands-ticker:hover .brands-track,
+.brands-ticker:focus-within .brands-track {
+    animation-play-state: paused;
+}
+
+@keyframes brands-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.brand-shape {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--tamkeen-white-hex);
+    border: 1px solid rgba(0,117,201,0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    padding: 18px 28px;
+    margin: 0 14px;
+    min-width: 170px;
+    height: 90px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.brand-shape:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,117,201,0.18);
+    border-color: var(--tamkeen-accent-hex);
+}
+
+.brand-shape span {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--tamkeen-primary-hex);
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .brands-track {
+        animation: none;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .brand-shape {
+        min-width: 130px;
+        height: 70px;
+        padding: 12px 18px;
+        margin: 0 10px;
+    }
+
+    .brand-shape span {
+        font-size: 0.9rem;
+    }
+}
+
+/* =========================
    CONTACT
 ========================= */
 
@@ -470,6 +605,52 @@ footer {
 
 .back-to-top.visible {
     display: flex;
+}
+
+/* =========================
+   ANNOUNCEMENT MODAL (corner toast, never covers hero logo)
+========================= */
+
+.announcement-modal {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: auto;
+    top: auto;
+    transform: none;
+    background-color: #ffffff;
+    color: #0075C9;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 99999;
+    max-width: 340px;
+    width: calc(100% - 40px);
+    text-align: left;
+    font-size: 0.95rem;
+    animation: announcement-modal-in 0.4s ease both;
+}
+
+@keyframes announcement-modal-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .announcement-modal {
+        left: 15px;
+        right: 15px;
+        bottom: 145px;
+        max-width: none;
+        width: auto;
+        text-align: center;
+    }
 }
 
 /* =========================
@@ -1004,12 +1185,9 @@ data-translate-key="partnersTitle"
 Our Technology Partners
 </h2>
 
-<p
-class="text-center"
-data-translate-key="partnersText"
->
-Siemens, ABB, Schneider Electric, Rockwell Automation, Mitsubishi Electric, Omron, Bosch Rexroth, Honeywell, Emerson, Fanuc, Yaskawa, GE Automation, Danfoss, WEG
-</p>
+<div class="brands-ticker" id="brands-ticker">
+<div class="brands-track" id="brands-track"></div>
+</div>
 
 </div>
 </section>
@@ -1846,6 +2024,59 @@ const WHATSAPP_PHONE_NUMBER_HTML =
 '+962797383980';
 
 /* =========================
+   BRANDS TICKER
+========================= */
+
+const BRAND_NAMES = [
+    "Siemens",
+    "ABB",
+    "Schneider Electric",
+    "Rockwell Automation",
+    "Mitsubishi Electric",
+    "Omron",
+    "Bosch Rexroth",
+    "Honeywell",
+    "Emerson",
+    "Fanuc",
+    "Yaskawa",
+    "GE Automation",
+    "Danfoss",
+    "WEG"
+];
+
+function setupBrandsTicker() {
+
+    const track =
+        document.getElementById('brands-track');
+
+    if (!track) return;
+
+    track.innerHTML = '';
+
+    /* Render the list twice back-to-back so the
+       looped animation (translateX -50%) is seamless */
+    for (let copy = 0; copy < 2; copy++) {
+
+        BRAND_NAMES.forEach(name => {
+
+            const shape =
+                document.createElement('div');
+
+            shape.className = 'brand-shape';
+
+            const label =
+                document.createElement('span');
+
+            label.textContent = name;
+
+            shape.appendChild(label);
+
+            track.appendChild(shape);
+        });
+    }
+}
+
+/* =========================
    LANGUAGE
 ========================= */
 
@@ -2010,6 +2241,12 @@ function setupAnnouncementBar() {
     bar.className =
         'announcement-bar';
 
+    const scrollTrack =
+        document.createElement('div');
+
+    scrollTrack.className =
+        'announcement-scroll';
+
     const megaphoneIcon =
         document.createElement('span');
 
@@ -2081,10 +2318,12 @@ function setupAnnouncementBar() {
         adjustStickyNav();
     };
 
-    bar.appendChild(megaphoneIcon);
-    bar.appendChild(textPart1);
-    bar.appendChild(link);
-    bar.appendChild(textPart2);
+    scrollTrack.appendChild(megaphoneIcon);
+    scrollTrack.appendChild(textPart1);
+    scrollTrack.appendChild(link);
+    scrollTrack.appendChild(textPart2);
+
+    bar.appendChild(scrollTrack);
     bar.appendChild(dismissButton);
 
     announcementContainer.appendChild(bar);
@@ -2171,6 +2410,8 @@ document.addEventListener(
         setInitialLanguage();
 
         setupAnnouncementBar();
+
+        setupBrandsTicker();
 
         /* =====================
            MOBILE MENU
@@ -2452,21 +2693,8 @@ document.addEventListener(
 
 <div
 id="announcement-modal"
+class="announcement-modal"
 style="
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background-color:#ffffff;
-color:#0075C9;
-padding:2rem;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-z-index:99999;
-max-width:400px;
-width:90%;
-text-align:center;
-font-size:1rem;
 display:none;
 "
 >
