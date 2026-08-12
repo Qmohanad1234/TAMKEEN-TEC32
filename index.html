@@ -6,6 +6,28 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none';"/>
 <title>Tamkeen Engineering Services</title>
 
+<!-- SEO -->
+<meta name="description" content="Tamkeen Engineering Services — industrial automation, PLC/SCADA integration, spare parts supply, machine vision, RPA, and hands-on PLC & IoT training since 2010. Serving MENA and Europe."/>
+<meta name="keywords" content="Tamkeen Engineering, industrial automation, PLC training, SCADA, Siemens, ABB, Schneider Electric, Rockwell Automation, machine vision, RPA, Amman Jordan"/>
+<link rel="canonical" href="https://www.tamkeen-tec.com/"/>
+
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Tamkeen Engineering Services"/>
+<meta property="og:title" content="Tamkeen Engineering Services - Automation & Training"/>
+<meta property="og:description" content="Advanced automation, SCADA, IoT and PLC training solutions since 2010. Serving industries across MENA and Europe."/>
+<meta property="og:image" content="https://www.tamkeen-tec.com/assets/images/banner-engineering.jpg"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:url" content="https://www.tamkeen-tec.com/"/>
+<meta property="og:locale" content="en_US"/>
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Tamkeen Engineering Services - Automation & Training"/>
+<meta name="twitter:description" content="Advanced automation, SCADA, IoT and PLC training solutions since 2010. Serving industries across MENA and Europe."/>
+<meta name="twitter:image" content="https://www.tamkeen-tec.com/assets/images/banner-engineering.jpg"/>
+
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet"/>
 <!-- Google Search / Browser favicon -->
 <link href="assets/images/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
@@ -2019,6 +2041,118 @@ const WHATSAPP_PHONE_NUMBER_HTML =
 '+962797383980';
 
 /* =========================
+   SCROLL SPY (highlight current section in nav)
+========================= */
+
+function setupScrollSpy() {
+
+    const sections =
+        Array.from(
+            document.querySelectorAll('section[id]')
+        );
+
+    const navLinks =
+        Array.from(
+            document.querySelectorAll('#nav-links-ul a[href^="#"]')
+        );
+
+    if (!sections.length || !navLinks.length) return;
+
+    const linksBySectionId = {};
+
+    navLinks.forEach(link => {
+
+        const id =
+            link.getAttribute('href').slice(1);
+
+        linksBySectionId[id] = link;
+    });
+
+    function setActiveLink(id) {
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+        });
+
+        const activeLink =
+            linksBySectionId[id];
+
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+    }
+
+    function getNavOffset() {
+
+        const navElement =
+            document.querySelector('nav');
+
+        return (
+            navElement
+                ? navElement.offsetHeight
+                : 0
+        ) + 30;
+    }
+
+    function onScrollSpy() {
+
+        const scrollPos =
+            window.scrollY + getNavOffset();
+
+        let currentId = null;
+
+        sections.forEach(section => {
+
+            if (
+                linksBySectionId[section.id] &&
+                section.offsetTop <= scrollPos
+            ) {
+                currentId = section.id;
+            }
+        });
+
+        /* Near the bottom of the page, force the last
+           section's link to be active */
+        const scrolledToBottom =
+            (window.innerHeight + window.scrollY) >=
+            (document.documentElement.scrollHeight - 4);
+
+        if (scrolledToBottom && sections.length) {
+
+            const lastSectionWithLink =
+                [...sections]
+                    .reverse()
+                    .find(s => linksBySectionId[s.id]);
+
+            if (lastSectionWithLink) {
+                currentId = lastSectionWithLink.id;
+            }
+        }
+
+        if (currentId) {
+            setActiveLink(currentId);
+        } else {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+        }
+    }
+
+    window.addEventListener(
+        'scroll',
+        onScrollSpy,
+        { passive: true }
+    );
+
+    window.addEventListener(
+        'resize',
+        onScrollSpy
+    );
+
+    onScrollSpy();
+}
+
+/* =========================
    BRANDS TICKER
 ========================= */
 
@@ -2407,6 +2541,8 @@ document.addEventListener(
         setupAnnouncementBar();
 
         setupBrandsTicker();
+
+        setupScrollSpy();
 
         /* =====================
            MOBILE MENU
