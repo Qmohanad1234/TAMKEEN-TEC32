@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Tamkeen — Software Delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F2138;
+    --ink-2:#17304C;
+    --paper:#F1F4F3;
+    --surface:#FFFFFF;
+    --line:#DDE3E6;
+    --line-strong:#C4CCD2;
+    --muted:#5B6875;
+    --muted-2:#8894A0;
+    --accent:#B07C2C;
+    --accent-ink:#7A5615;
+    --good:#2E7D4F;
+    --good-bg:#E6F3EB;
+    --font-display:'IBM Plex Sans',-apple-system,Segoe UI,sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-display);
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+
+  /* --- AUTH GATE / OVERLAY STYLES --- */
+  #page-content {
+    display: none; /* Hidden until authenticated */
+  }
+
+  #auth-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 33, 56, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .auth-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    text-align: center;
+  }
+
+  .auth-brand-mark {
+    width: 48px; height: 48px; border-radius: 8px;
+    background: linear-gradient(155deg,var(--accent),var(--accent-ink));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 600; font-size: 20px; color: #1B1204;
+    margin: 0 auto 16px;
+  }
+
+  .auth-card h2 {
+    font-size: 18px; margin: 0 0 6px; font-weight: 600; color: var(--ink);
+  }
+  .auth-card p {
+    font-size: 13px; color: var(--muted); margin: 0 0 22px;
+  }
+
+  .auth-field {
+    margin-bottom: 14px;
+    text-align: left;
+  }
+  .auth-field label {
+    display: block; font-size: 11.5px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--muted); margin-bottom: 5px;
+  }
+  .auth-field input {
+    width: 100%; padding: 10px 12px; font-size: 13.5px;
+    border: 1px solid var(--line-strong); border-radius: 6px;
+    outline: none; font-family: inherit;
+  }
+  .auth-field input:focus {
+    border-color: var(--ink);
+  }
+
+  .auth-btn {
+    width: 100%; padding: 11px; margin-top: 6px;
+    background: var(--ink); color: #fff; font-weight: 600; font-size: 13.5px;
+    border: none; border-radius: 6px; cursor: pointer;
+  }
+  .auth-btn:hover { background: var(--ink-2); }
+
+  #auth-error {
+    display: none; color: #C53030; background: #FFF5F5; border: 1px solid #FEB2B2;
+    padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-top: 14px;
+  }
+
+  /* --- PAGE STYLES --- */
+  a{color:inherit;}
+  .skip{position:absolute;left:-999px;}
+  .skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:50;border-radius:4px;}
+
+  .masthead{background:var(--ink);color:#EAF0F6;padding:22px 32px 20px;}
+  .masthead-inner{
+    max-width:1180px;margin:0 auto;display:flex;
+    align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand-mark{
+    width:44px;height:44px;border-radius:8px;
+    background:linear-gradient(155deg,var(--accent),var(--accent-ink));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-weight:600;font-size:18px;color:#1B1204;
+    flex-shrink:0;
+  }
+  .brand-text h1{font-size:20px;margin:0;font-weight:600;letter-spacing:.01em;}
+  .brand-text p{margin:2px 0 0;font-size:12.5px;color:#B7C4D2;letter-spacing:.02em;}
+  .masthead-meta{text-align:right;font-size:12.5px;color:#B7C4D2;}
+  .masthead-meta strong{color:#EAF0F6;font-weight:500;}
+  .masthead-tag{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-top:6px;font-size:11.5px;color:#DCE6EF;
+    border:1px solid #2C4A6A;background:#132A45;
+    padding:4px 10px;border-radius:999px;
+  }
+  .masthead-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  nav.tabs{background:var(--ink-2);border-bottom:1px solid #0E2338;}
+  .tabs-inner{
+    max-width:1180px;margin:0 auto;padding:0 32px;
+    display:flex;gap:28px;font-size:13.5px;
+  }
+  .tabs-inner a{
+    display:inline-block;padding:12px 2px;color:#B7C4D2;
+    text-decoration:none;border-bottom:2px solid transparent;
+  }
+  .tabs-inner a.active{color:#fff;border-bottom-color:var(--accent);font-weight:500;}
+
+  .subnav{background:var(--surface);border-bottom:1px solid var(--line);}
+  .subnav-inner{
+    max-width:1180px;margin:0 auto;padding:0 32px;
+    display:flex;gap:26px;font-size:13.5px;
+  }
+  .subnav-inner a{
+    display:inline-block;padding:13px 2px;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;
+  }
+  .subnav-inner a.active{color:var(--ink);border-bottom-color:var(--ink);font-weight:600;}
+
+  main{max-width:1180px;margin:0 auto;padding:28px 32px 64px;}
+
+  /* CUSTOMER DATA CARD */
+  .customer-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px 24px;
+  }
+  .customer-item dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted-2);
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .customer-item dd {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .customer-item dd a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .customer-item dd a:hover {
+    text-decoration: underline;
+  }
+
+  .toolbar{
+    display:flex;align-items:center;justify-content:flex-end;
+    gap:16px;flex-wrap:wrap;margin-bottom:18px;
+  }
+  .toolbar-right{font-size:12px;color:var(--muted-2);}
+  .toolbar-right b{color:var(--muted);font-weight:600;}
+
+  .delivery-note{
+    font-size:12.5px;color:var(--muted);
+    background:#E9EDEF;border:1px solid var(--line);
+    padding:9px 16px;border-radius:6px 6px 0 0;
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:6px;
+  }
+  .delivery-note a{font-size:12px;color:var(--accent-ink);text-decoration:none;font-weight:500;}
+
+  table.delivery{
+    width:100%;border-collapse:collapse;background:var(--surface);
+    border:1px solid var(--line);border-top:none;font-size:13px;
+  }
+  table.delivery thead th{
+    text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
+    color:var(--muted-2);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line);
+    background:#FAFBFB;
+  }
+  table.delivery td{padding:16px;vertical-align:top;border-bottom:1px solid var(--line);}
+  table.delivery tr:last-child td{border-bottom:none;}
+
+  .article-no{font-family:var(--font-mono);font-weight:600;font-size:13px;color:var(--ink);}
+  .article-desc{color:var(--muted);font-size:12.5px;margin-top:3px;}
+
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:7px 12px;border-radius:6px;font-size:12.5px;font-weight:500;
+    border:1px solid transparent;white-space:nowrap;
+  }
+  .chip-cert{background:var(--good-bg);color:var(--good);border-color:#CFE8D8;}
+  .chip-key{background:var(--surface);color:var(--ink);border-color:var(--line-strong);}
+  .chip svg{flex-shrink:0;}
+
+  .download-btn{
+    display:inline-flex;align-items:center;justify-content:space-between;gap:12px;
+    background:var(--ink);color:#fff;font-weight:600;font-size:13px;
+    padding:10px 14px;border-radius:6px;text-decoration:none;
+    border:1px solid var(--ink);width:100%;max-width:210px;
+    transition:background-color .15s ease;
+  }
+  .download-btn:hover{background:#173252;}
+  .download-btn .left{display:flex;align-items:center;gap:8px;}
+  .download-btn .check{flex-shrink:0;}
+  .source-note{font-size:11px;color:var(--muted-2);margin-top:6px;max-width:170px;}
+
+  details.spec summary{
+    list-style:none;cursor:pointer;padding:12px 16px;font-size:12.5px;
+    color:var(--accent-ink);font-weight:500;background:#FAFBFB;
+    border:1px solid var(--line);border-top:none;
+  }
+  details.spec summary::-webkit-details-marker{display:none;}
+  details.spec summary:before{content:"▸ ";}
+  details.spec[open] summary:before{content:"▾ ";}
+  .spec-body{
+    border:1px solid var(--line);border-top:none;background:var(--surface);
+    padding:20px 24px 24px;
+  }
+  .spec-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px 28px;margin-top:4px;
+  }
+  .spec-item dt{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-2);font-weight:600;margin-bottom:4px;}
+  .spec-item dd{margin:0;font-size:13px;color:var(--ink);}
+  .spec-item.mono dd{font-family:var(--font-mono);}
+
+  .spec-lang{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
+  .lang-tag{
+    font-size:11px;font-family:var(--font-mono);background:#EEF1F2;color:var(--muted);
+    padding:2px 7px;border-radius:4px;border:1px solid var(--line);
+  }
+
+  footer{
+    max-width:1180px;margin:0 auto;padding:0 32px 40px;
+    font-size:11.5px;color:var(--muted-2);
+  }
+
+  @media (max-width:720px){
+    .masthead,.tabs-inner,.subnav-inner,main,footer{padding-left:18px;padding-right:18px;}
+    table.delivery thead{display:none;}
+    table.delivery, table.delivery tbody, table.delivery tr, table.delivery td{display:block;width:100%;}
+    table.delivery tr{border-bottom:8px solid var(--paper);}
+    table.delivery td{border-bottom:1px solid var(--line);padding:10px 16px;}
+    table.delivery td:before{
+      content:attr(data-label);display:block;font-size:10.5px;text-transform:uppercase;
+      letter-spacing:.04em;color:var(--muted-2);font-weight:600;margin-bottom:5px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY -->
+<div id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-brand-mark">TK</div>
+    <h2>Protected Area</h2>
+    <p>Please log in to access the software delivery portal.</p>
+    
+    <form id="auth-form" onsubmit="return handleLogin(event)">
+      <div class="auth-field">
+        <label for="username">Username</label>
+        <input type="text" id="username" required placeholder="Enter username" autocomplete="username">
+      </div>
+      <div class="auth-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" required placeholder="Enter password" autocomplete="current-password">
+      </div>
+      <button type="submit" class="auth-btn">Log In</button>
+      <div id="auth-error">Invalid username or password.</div>
+    </form>
+  </div>
+</div>
+
+<!-- PAGE CONTENT (PROTECTED) -->
+<div id="page-content">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">TK</div>
+        <div class="brand-text">
+          <h1>Tamkeen Engineering Services</h1>
+          <p>Software &amp; Licensing Delivery</p>
+        </div>
+      </div>
+      <div class="masthead-meta">
+        <div>Industrial Automation Procurement Desk</div>
+        <div><strong>Amman, Jordan · Al‑Khobar, Saudi Arabia</strong></div>
+        <span class="masthead-tag"><span class="dot"></span> Engineering software sourcing &amp; licensing support</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Primary">
+    <div class="tabs-inner">
+      <a href="#delivery-table" class="active">Software Delivery</a>
+    </div>
+  </nav>
+
+  <div class="subnav">
+    <div class="subnav-inner">
+      <a href="https://drive.google.com/file/d/1BJQJM4vtoX7cOVXthNjAdyl_X4BF68tm/view?usp=sharing" target="_blank" rel="noopener" class="active">Product Download</a>
+      <a href="#specs">License Overview</a>
+      <a href="mailto:moahnnad@tamkeen-tec.com?subject=Contract%20Query%20%E2%80%94%20APCO-JO-88210">Support &amp; Contracts ↗</a>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- CUSTOMER DATA SECTION -->
+    <div class="customer-card" id="customer-data">
+      <div class="customer-item">
+        <dt>Customer Name</dt>
+        <dd>Attarat Power Company (APCO)</dd>
+      </div>
+      <div class="customer-item">
+        <dt>Procurement Email</dt>
+        <dd><a href="mailto:Attarat.procurement@ap.com.jo">Attarat.procurement@ap.com.jo</a></dd>
+      </div>
+      <div class="customer-item">
+        <dt>Account ID</dt>
+        <dd style="font-family: var(--font-mono);">APCO‑JO‑88210</dd>
+      </div>
+      <div class="customer-item">
+        <dt>Project / Region</dt>
+        <dd>Attarat Oil Shale Power Plant · Jordan</dd>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-right">Showing <b>1</b> of <b>1</b> item · Filter: <b>Default</b></div>
+    </div>
+
+    <div class="delivery-note">
+      <span>Delivery Note <strong>TK‑ENG‑SW‑0142</strong> — Requested 18 Aug 2026</span>
+      <a href="#specs">Jump to full specification ↓</a>
+    </div>
+
+    <table class="delivery" id="delivery-table">
+      <thead>
+        <tr>
+          <th style="width:6%">Pos.</th>
+          <th style="width:24%">Article No. &amp; Description</th>
+          <th style="width:8%">Qty</th>
+          <th style="width:14%">Certificate</th>
+          <th style="width:14%">License Key</th>
+          <th style="width:16%">Software &amp; Documents</th>
+          <th style="width:18%">Further Information</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Position">1</td>
+          <td data-label="Article No. & Description">
+            <div class="article-no">6ES7810‑4CC11‑0YA5</div>
+            <div class="article-desc">SIMATIC S7 · STEP 7 V5.6 SP1<br>Floating license, 1 user</div>
+          </td>
+          <td data-label="Quantity">1</td>
+          <td data-label="Certificate">
+            <span class="chip chip-cert">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Verified
+            </span>
+          </td>
+          <td data-label="License Key">
+            <span class="chip chip-key">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M11.5 12H21M17 12v4M21 12v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Online / Digital
+            </span>
+          </td>
+          <td data-label="Software & Documents">
+            <a class="download-btn" href="https://drive.google.com/file/d/1BJQJM4vtoX7cOVXthNjAdyl_X4BF68tm/view?usp=sharing" target="_blank" rel="noopener">
+              <span class="left">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Download
+              </span>
+              <svg class="check" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="#3ECF7A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <p class="source-note">Direct link to product download package.</p>
+          </td>
+          <td data-label="Further Information">
+            <a href="#specs">Full specification</a><br>
+            <a href="mailto:moahnnad@tamkeen-tec.com?subject=Support%20%2F%20Quotation%20request%20—%206ES7810-4CC11-0YA5%20(APCO)&body=Customer:%20Attarat%20Power%20Company%0AEmail:%20Attarat.procurement@ap.com.jo%0AArticle:%206ES7810-4CC11-0YA5">Contact Support / Request Quotation</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <details class="spec" id="specs" open>
+      <summary>Product specification — SIMATIC STEP 7 V5.6 SP1</summary>
+      <div class="spec-body">
+        <div class="spec-grid">
+          <div class="spec-item mono">
+            <dt>Article No.</dt>
+            <dd>6ES7810‑4CC11‑0YA5</dd>
+          </div>
+          <div class="spec-item mono">
+            <dt>License Number</dt>
+            <dd style="font-weight:600; color:var(--accent-ink);">10411000797172388334</dd>
+          </div>
+          <div class="spec-item">
+            <dt>Product line</dt>
+            <dd>SIMATIC S7 Engineering Software</dd>
+          </div>
+          <div class="spec-item">
+            <dt>License type</dt>
+            <dd>Floating license, 1 user</dd>
+          </div>
+          <div class="spec-item">
+            <dt>Delivery media</dt>
+            <dd>Software, documentation &amp; license key via digital download</dd>
+          </div>
+          <div class="spec-item">
+            <dt>Software class</dt>
+            <dd>Class A</dd>
+          </div>
+          <div class="spec-item">
+            <dt>Reference hardware</dt>
+            <dd>SIMATIC S7‑300 / S7‑400, C7</dd>
+          </div>
+          <div class="spec-item" style="grid-column:1/-1">
+            <dt>Compatible operating systems</dt>
+            <dd>Windows 7 SP1 · Windows 10 Professional / Enterprise · Windows Server 2008 R2 SP1 · Windows Server 2012 R2 · Windows Server 2016</dd>
+          </div>
+          <div class="spec-item" style="grid-column:1/-1">
+            <dt>Available languages</dt>
+            <dd>
+              <div class="spec-lang">
+                <span class="lang-tag">DE</span>
+                <span class="lang-tag">EN</span>
+                <span class="lang-tag">FR</span>
+                <span class="lang-tag">ES</span>
+                <span class="lang-tag">IT</span>
+              </div>
+            </dd>
+          </div>
+        </div>
+      </div>
+    </details>
+
+  </main>
+
+  <footer>
+    © 2026 Tamkeen Engineering Services. Product names and trademarks are property of Siemens AG. Availability and pricing confirmed on request.
+  </footer>
+</div>
+
+<!-- AUTH SCRIPT -->
+<script>
+  const VALID_CREDENTIALS = {
+    "Attarat.procurement@ap.com.jo": "SIMATICMANAGER5.6",
+    "1": "1"
+  };
+
+  function handleLogin(e) {
+    e.preventDefault();
+    const userIn = document.getElementById("username").value.trim();
+    const passIn = document.getElementById("password").value.trim();
+    const errDiv = document.getElementById("auth-error");
+
+    if (VALID_CREDENTIALS[userIn] && VALID_CREDENTIALS[userIn] === passIn) {
+      document.getElementById("auth-overlay").style.display = "none";
+      document.getElementById("page-content").style.display = "block";
+    } else {
+      errDiv.style.display = "block";
+    }
+    return false;
+  }
+</script>
+
+</body>
+</html>
