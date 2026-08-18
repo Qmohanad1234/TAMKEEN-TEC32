@@ -44,9 +44,9 @@
   #auth-overlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 33, 56, 0.95);
+    background: rgba(15, 33, 56, 0.96);
     backdrop-filter: blur(8px);
-    z-index: 9999;
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -299,7 +299,7 @@
     <h2>Protected Area</h2>
     <p>Please log in to access the software delivery portal.</p>
     
-    <form id="auth-form" onsubmit="return handleLogin(event)">
+    <form id="auth-form" onsubmit="handleLogin(event)">
       <div class="auth-field">
         <label for="username">Username</label>
         <input type="text" id="username" required placeholder="Enter username" autocomplete="username">
@@ -502,7 +502,7 @@
   };
 
   function handleLogin(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const userIn = document.getElementById("username").value.trim();
     const passIn = document.getElementById("password").value.trim();
     const errDiv = document.getElementById("auth-error");
