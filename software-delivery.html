@@ -5,38 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Tamkeen — Software Delivery</title>
+
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Poppins:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Favicon -->
+<link href="assets/images/favicon.png" rel="icon" type="image/png" sizes="256x256"/>
+<link href="assets/images/favicon.ico" rel="icon" type="image/x-icon"/>
+
 <style>
-  :root{
-    --ink:#0F2138;
-    --ink-2:#17304C;
-    --paper:#F1F4F3;
-    --surface:#FFFFFF;
-    --line:#DDE3E6;
-    --line-strong:#C4CCD2;
-    --muted:#5B6875;
-    --muted-2:#8894A0;
-    --accent:#B07C2C;
-    --accent-ink:#7A5615;
-    --good:#2E7D4F;
-    --good-bg:#E6F3EB;
-    --font-display:'IBM Plex Sans',-apple-system,Segoe UI,sans-serif;
-    --font-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  :root {
+    --tamkeen-primary-hex: #0075C9;
+    --tamkeen-primary-dark: #005a9e;
+    --tamkeen-accent-hex: #009999;
+    --tamkeen-accent-dark: #007a7a;
+    --tamkeen-text-hex: #222222;
+    --tamkeen-bg-light-hex: #f0f4f8;
+    --tamkeen-white-hex: #ffffff;
+    
+    --paper: #f0f4f8;
+    --surface: #ffffff;
+    --line: #dbe3ea;
+    --line-strong: #b8c6d4;
+    --muted: #556575;
+    --muted-2: #7f8e9d;
+    --good: #107c41;
+    --good-bg: #e6f4ea;
+    
+    --font-display: 'Open Sans', -apple-system, Segoe UI, sans-serif;
+    --font-heading: 'Poppins', sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
   }
 
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;scroll-behavior:smooth;}
-  body{
-    font-family:var(--font-display);
-    background:var(--paper);
-    color:var(--ink);
-    -webkit-font-smoothing:antialiased;
-    line-height:1.5;
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-display);
+    background: var(--paper);
+    color: var(--tamkeen-text-hex);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
   }
 
-  /* --- AUTH GATE / OVERLAY STYLES --- */
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+  }
+
+  a { color: inherit; }
+
+  /* --- ENHANCED AUTH GATE / OVERLAY STYLES --- */
   #page-content {
     display: none; /* Hidden until authenticated */
   }
@@ -44,8 +63,12 @@
   #auth-overlay {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(15, 33, 56, 0.96);
-    backdrop-filter: blur(8px);
+    /* Clever move: Dynamic Tamkeen gradient with floating ambient orb glow */
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(0, 153, 153, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(0, 117, 201, 0.3) 0%, transparent 45%),
+      linear-gradient(135deg, #001f3f 0%, #004b82 50%, #006666 100%);
+    backdrop-filter: blur(12px);
     z-index: 99999;
     display: flex;
     align-items: center;
@@ -54,123 +77,287 @@
   }
 
   .auth-card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 32px 28px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 40px 36px;
     width: 100%;
-    max-width: 380px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    max-width: 410px;
+    box-shadow: 0 25px 50px -12px rgba(0, 31, 63, 0.45), 0 0 0 1px rgba(0, 153, 153, 0.15);
     text-align: center;
+    position: relative;
+    overflow: hidden;
   }
 
-  .auth-brand-mark {
-    width: 48px; height: 48px; border-radius: 8px;
-    background: linear-gradient(155deg,var(--accent),var(--accent-ink));
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-weight: 600; font-size: 20px; color: #1B1204;
-    margin: 0 auto 16px;
+  /* Top themed accent bar matching Tamkeen gradient */
+  .auth-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(to right, var(--tamkeen-primary-hex), var(--tamkeen-accent-hex));
+  }
+
+  .auth-brand-logo {
+    height: 54px;
+    width: auto;
+    margin: 0 auto 20px;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
   }
 
   .auth-card h2 {
-    font-size: 18px; margin: 0 0 6px; font-weight: 600; color: var(--ink);
+    font-size: 21px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    color: #004b82;
   }
   .auth-card p {
-    font-size: 13px; color: var(--muted); margin: 0 0 22px;
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0 0 26px;
   }
 
   .auth-field {
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     text-align: left;
+    position: relative;
   }
   .auth-field label {
-    display: block; font-size: 11.5px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: .04em; color: var(--muted); margin-bottom: 5px;
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--muted);
+    margin-bottom: 6px;
   }
+  
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
   .auth-field input {
-    width: 100%; padding: 10px 12px; font-size: 13.5px;
-    border: 1px solid var(--line-strong); border-radius: 6px;
-    outline: none; font-family: inherit;
+    width: 100%;
+    padding: 11px 40px 11px 14px;
+    font-size: 14px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 8px;
+    outline: none;
+    font-family: inherit;
+    background: #f8fafc;
+    transition: all 0.25s ease;
   }
   .auth-field input:focus {
-    border-color: var(--ink);
+    border-color: var(--tamkeen-primary-hex);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 117, 201, 0.15);
+  }
+
+  /* Clever move: Password visibility toggle button */
+  .toggle-pw-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--muted-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+  }
+  .toggle-pw-btn:hover {
+    color: var(--tamkeen-primary-hex);
   }
 
   .auth-btn {
-    width: 100%; padding: 11px; margin-top: 6px;
-    background: var(--ink); color: #fff; font-weight: 600; font-size: 13.5px;
-    border: none; border-radius: 6px; cursor: pointer;
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, var(--tamkeen-primary-hex) 0%, var(--tamkeen-accent-hex) 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14.5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 117, 201, 0.3);
+    transition: all 0.25s ease;
   }
-  .auth-btn:hover { background: var(--ink-2); }
+  .auth-btn:hover {
+    background: linear-gradient(135deg, var(--tamkeen-primary-dark) 0%, var(--tamkeen-accent-dark) 100%);
+    box-shadow: 0 6px 16px rgba(0, 117, 201, 0.4);
+    transform: translateY(-1px);
+  }
+  .auth-btn:active {
+    transform: translateY(0);
+  }
 
   #auth-error {
-    display: none; color: #C53030; background: #FFF5F5; border: 1px solid #FEB2B2;
-    padding: 8px 12px; border-radius: 6px; font-size: 12px; margin-top: 14px;
+    display: none;
+    color: #c53030;
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    margin-top: 18px;
+    animation: shake 0.3s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
   }
 
   /* --- PAGE STYLES --- */
-  a{color:inherit;}
-  .skip{position:absolute;left:-999px;}
-  .skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:50;border-radius:4px;}
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 8px; top: 8px; background: #fff; padding: 8px 12px; z-index: 50; border-radius: 4px; }
 
-  .masthead{background:var(--ink);color:#EAF0F6;padding:22px 32px 20px;}
-  .masthead-inner{
-    max-width:1180px;margin:0 auto;display:flex;
-    align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  /* MASTHEAD & NAVBAR */
+  .masthead {
+    background: linear-gradient(to right, var(--tamkeen-primary-hex), var(--tamkeen-accent-hex));
+    color: #ffffff;
+    padding: 24px 32px;
   }
-  .brand{display:flex;align-items:center;gap:14px;}
-  .brand-mark{
-    width:44px;height:44px;border-radius:8px;
-    background:linear-gradient(155deg,var(--accent),var(--accent-ink));
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--font-mono);font-weight:600;font-size:18px;color:#1B1204;
-    flex-shrink:0;
+  .masthead-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
   }
-  .brand-text h1{font-size:20px;margin:0;font-weight:600;letter-spacing:.01em;}
-  .brand-text p{margin:2px 0 0;font-size:12.5px;color:#B7C4D2;letter-spacing:.02em;}
-  .masthead-meta{text-align:right;font-size:12.5px;color:#B7C4D2;}
-  .masthead-meta strong{color:#EAF0F6;font-weight:500;}
-  .masthead-tag{
-    display:inline-flex;align-items:center;gap:6px;
-    margin-top:6px;font-size:11.5px;color:#DCE6EF;
-    border:1px solid #2C4A6A;background:#132A45;
-    padding:4px 10px;border-radius:999px;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
-  .masthead-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .brand-logo {
+    height: 48px;
+    width: auto;
+    background: #ffffff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .brand-text h1 {
+    font-size: 22px;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: .01em;
+  }
+  .brand-text p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+  }
+  .masthead-meta {
+    text-align: right;
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.85);
+  }
+  .masthead-meta strong {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  .masthead-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(0,0,0,0.15);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .masthead-tag .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3ecf7a;
+  }
 
-  nav.tabs{background:var(--ink-2);border-bottom:1px solid #0E2338;}
-  .tabs-inner{
-    max-width:1180px;margin:0 auto;padding:0 32px;
-    display:flex;gap:28px;font-size:13.5px;
+  nav.tabs {
+    background: var(--tamkeen-primary-dark);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
   }
-  .tabs-inner a{
-    display:inline-block;padding:12px 2px;color:#B7C4D2;
-    text-decoration:none;border-bottom:2px solid transparent;
+  .tabs-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 28px;
+    font-size: 13.5px;
   }
-  .tabs-inner a.active{color:#fff;border-bottom-color:var(--accent);font-weight:500;}
+  .tabs-inner a {
+    display: inline-block;
+    padding: 12px 2px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 500;
+  }
+  .tabs-inner a.active {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
+    font-weight: 600;
+  }
 
-  .subnav{background:var(--surface);border-bottom:1px solid var(--line);}
-  .subnav-inner{
-    max-width:1180px;margin:0 auto;padding:0 32px;
-    display:flex;gap:26px;font-size:13.5px;
+  .subnav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
   }
-  .subnav-inner a{
-    display:inline-block;padding:13px 2px;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;
+  .subnav-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    gap: 26px;
+    font-size: 13.5px;
   }
-  .subnav-inner a.active{color:var(--ink);border-bottom-color:var(--ink);font-weight:600;}
+  .subnav-inner a {
+    display: inline-block;
+    padding: 13px 2px;
+    text-decoration: none;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s;
+  }
+  .subnav-inner a:hover {
+    color: var(--tamkeen-primary-hex);
+  }
+  .subnav-inner a.active {
+    color: var(--tamkeen-primary-hex);
+    border-bottom-color: var(--tamkeen-primary-hex);
+    font-weight: 600;
+  }
 
-  main{max-width:1180px;margin:0 auto;padding:28px 32px 64px;}
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 32px 64px;
+  }
 
   /* CUSTOMER DATA CARD */
   .customer-card {
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 16px 20px;
+    padding: 20px 24px;
     margin-bottom: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   }
   .customer-item dt {
     font-size: 11px;
@@ -182,131 +369,247 @@
   }
   .customer-item dd {
     margin: 0;
-    font-size: 13px;
-    color: var(--ink);
-    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--tamkeen-text-hex);
+    font-weight: 600;
   }
   .customer-item dd a {
-    color: var(--ink);
+    color: var(--tamkeen-primary-hex);
     text-decoration: none;
   }
   .customer-item dd a:hover {
     text-decoration: underline;
   }
 
-  .toolbar{
-    display:flex;align-items:center;justify-content:flex-end;
-    gap:16px;flex-wrap:wrap;margin-bottom:18px;
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
   }
-  .toolbar-right{font-size:12px;color:var(--muted-2);}
-  .toolbar-right b{color:var(--muted);font-weight:600;}
-
-  .delivery-note{
-    font-size:12.5px;color:var(--muted);
-    background:#E9EDEF;border:1px solid var(--line);
-    padding:9px 16px;border-radius:6px 6px 0 0;
-    display:flex;justify-content:space-between;align-items:center;
-    flex-wrap:wrap;gap:6px;
+  .toolbar-right {
+    font-size: 12px;
+    color: var(--muted-2);
   }
-  .delivery-note a{font-size:12px;color:var(--accent-ink);text-decoration:none;font-weight:500;}
-
-  table.delivery{
-    width:100%;border-collapse:collapse;background:var(--surface);
-    border:1px solid var(--line);border-top:none;font-size:13px;
-  }
-  table.delivery thead th{
-    text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;
-    color:var(--muted-2);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line);
-    background:#FAFBFB;
-  }
-  table.delivery td{padding:16px;vertical-align:top;border-bottom:1px solid var(--line);}
-  table.delivery tr:last-child td{border-bottom:none;}
-
-  .article-no{font-family:var(--font-mono);font-weight:600;font-size:13px;color:var(--ink);}
-  .article-desc{color:var(--muted);font-size:12.5px;margin-top:3px;}
-
-  .chip{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:7px 12px;border-radius:6px;font-size:12.5px;font-weight:500;
-    border:1px solid transparent;white-space:nowrap;
-  }
-  .chip-cert{background:var(--good-bg);color:var(--good);border-color:#CFE8D8;}
-  .chip-key{background:var(--surface);color:var(--ink);border-color:var(--line-strong);}
-  .chip svg{flex-shrink:0;}
-
-  .download-btn{
-    display:inline-flex;align-items:center;justify-content:space-between;gap:12px;
-    background:var(--ink);color:#fff;font-weight:600;font-size:13px;
-    padding:10px 14px;border-radius:6px;text-decoration:none;
-    border:1px solid var(--ink);width:100%;max-width:210px;
-    transition:background-color .15s ease;
-  }
-  .download-btn:hover{background:#173252;}
-  .download-btn .left{display:flex;align-items:center;gap:8px;}
-  .download-btn .check{flex-shrink:0;}
-  .source-note{font-size:11px;color:var(--muted-2);margin-top:6px;max-width:170px;}
-
-  details.spec summary{
-    list-style:none;cursor:pointer;padding:12px 16px;font-size:12.5px;
-    color:var(--accent-ink);font-weight:500;background:#FAFBFB;
-    border:1px solid var(--line);border-top:none;
-  }
-  details.spec summary::-webkit-details-marker{display:none;}
-  details.spec summary:before{content:"▸ ";}
-  details.spec[open] summary:before{content:"▾ ";}
-  .spec-body{
-    border:1px solid var(--line);border-top:none;background:var(--surface);
-    padding:20px 24px 24px;
-  }
-  .spec-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:18px 28px;margin-top:4px;
-  }
-  .spec-item dt{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted-2);font-weight:600;margin-bottom:4px;}
-  .spec-item dd{margin:0;font-size:13px;color:var(--ink);}
-  .spec-item.mono dd{font-family:var(--font-mono);}
-
-  .spec-lang{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
-  .lang-tag{
-    font-size:11px;font-family:var(--font-mono);background:#EEF1F2;color:var(--muted);
-    padding:2px 7px;border-radius:4px;border:1px solid var(--line);
+  .toolbar-right b {
+    color: var(--muted);
+    font-weight: 600;
   }
 
-  footer{
-    max-width:1180px;margin:0 auto;padding:0 32px 40px;
-    font-size:11.5px;color:var(--muted-2);
+  .delivery-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    background: #e4ebf2;
+    border: 1px solid var(--line);
+    padding: 10px 16px;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .delivery-note a {
+    font-size: 12px;
+    color: var(--tamkeen-primary-hex);
+    text-decoration: none;
+    font-weight: 600;
   }
 
-  @media (max-width:720px){
-    .masthead,.tabs-inner,.subnav-inner,main,footer{padding-left:18px;padding-right:18px;}
-    table.delivery thead{display:none;}
-    table.delivery, table.delivery tbody, table.delivery tr, table.delivery td{display:block;width:100%;}
-    table.delivery tr{border-bottom:8px solid var(--paper);}
-    table.delivery td{border-bottom:1px solid var(--line);padding:10px 16px;}
-    table.delivery td:before{
-      content:attr(data-label);display:block;font-size:10.5px;text-transform:uppercase;
-      letter-spacing:.04em;color:var(--muted-2);font-weight:600;margin-bottom:5px;
+  table.delivery {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: none;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  table.delivery thead th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted-2);
+    font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    background: #fafbfb;
+  }
+  table.delivery td {
+    padding: 16px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line);
+  }
+  table.delivery tr:last-child td {
+    border-bottom: none;
+  }
+
+  .article-no {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--tamkeen-primary-hex);
+  }
+  .article-desc {
+    color: var(--muted);
+    font-size: 12.5px;
+    margin-top: 3px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .chip-cert {
+    background: var(--good-bg);
+    color: var(--good);
+    border-color: #cfe8d8;
+  }
+  .chip-key {
+    background: #f0f4f8;
+    color: var(--tamkeen-text-hex);
+    border-color: var(--line-strong);
+  }
+  .chip svg { flex-shrink: 0; }
+
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--tamkeen-primary-hex);
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    border: 1px solid var(--tamkeen-primary-hex);
+    width: 100%;
+    max-width: 210px;
+    transition: background-color .15s ease;
+  }
+  .download-btn:hover { background: var(--tamkeen-primary-dark); }
+  .download-btn .left { display: flex; align-items: center; gap: 8px; }
+  .download-btn .check { flex-shrink: 0; }
+  .source-note { font-size: 11px; color: var(--muted-2); margin-top: 6px; max-width: 170px; }
+
+  details.spec summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--tamkeen-primary-hex);
+    font-weight: 600;
+    background: #fafbfb;
+    border: 1px solid var(--line);
+    border-top: none;
+  }
+  details.spec summary::-webkit-details-marker { display: none; }
+  details.spec summary:before { content: "▸ "; }
+  details.spec[open] summary:before { content: "▾ "; }
+  .spec-body {
+    border: 1px solid var(--line);
+    border-top: none;
+    background: var(--surface);
+    padding: 20px 24px 24px;
+  }
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px 28px;
+    margin-top: 4px;
+  }
+  .spec-item dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted-2);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .spec-item dd {
+    margin: 0;
+    font-size: 13px;
+    color: var(--tamkeen-text-hex);
+  }
+  .spec-item.mono dd { font-family: var(--font-mono); }
+
+  .spec-lang { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+  .lang-tag {
+    font-size: 11px;
+    font-family: var(--font-mono);
+    background: #eef1f2;
+    color: var(--muted);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+  }
+
+  footer {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 32px 40px;
+    font-size: 12px;
+    color: var(--muted-2);
+  }
+
+  @media (max-width:720px) {
+    .masthead, .tabs-inner, .subnav-inner, main, footer { padding-left: 18px; padding-right: 18px; }
+    table.delivery thead { display: none; }
+    table.delivery, table.delivery tbody, table.delivery tr, table.delivery td { display: block; width: 100%; }
+    table.delivery tr { border-bottom: 8px solid var(--paper); }
+    table.delivery td { border-bottom: 1px solid var(--line); padding: 10px 16px; }
+    table.delivery td:before {
+      content: attr(data-label);
+      display: block;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--muted-2);
+      font-weight: 600;
+      margin-bottom: 5px;
     }
   }
 </style>
 </head>
 <body>
 
-<!-- LOGIN OVERLAY -->
+<!-- ENHANCED LOGIN OVERLAY -->
 <div id="auth-overlay">
   <div class="auth-card">
-    <div class="auth-brand-mark">TK</div>
+    <img src="assets/images/logo-tamkeen-true-dimensions.png" alt="Tamkeen Engineering Services Logo" class="auth-brand-logo">
     <h2>Protected Area</h2>
     <p>Please log in to access the software delivery portal.</p>
     
     <form id="auth-form" onsubmit="handleLogin(event)">
       <div class="auth-field">
         <label for="username">Username</label>
-        <input type="text" id="username" required placeholder="Enter username" autocomplete="username">
+        <div class="input-wrapper">
+          <input type="text" id="username" required placeholder="Enter username" autocomplete="username">
+        </div>
       </div>
       <div class="auth-field">
         <label for="password">Password</label>
-        <input type="password" id="password" required placeholder="Enter password" autocomplete="current-password">
+        <div class="input-wrapper">
+          <input type="password" id="password" required placeholder="Enter password" autocomplete="current-password">
+          <button type="button" class="toggle-pw-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
       </div>
       <button type="submit" class="auth-btn">Log In</button>
       <div id="auth-error">Invalid username or password.</div>
@@ -321,7 +624,7 @@
   <header class="masthead">
     <div class="masthead-inner">
       <div class="brand">
-        <div class="brand-mark" aria-hidden="true">TK</div>
+        <img src="assets/images/logo-tamkeen-true-dimensions.png" alt="Tamkeen Logo" class="brand-logo">
         <div class="brand-text">
           <h1>Tamkeen Engineering Services</h1>
           <p>Software &amp; Licensing Delivery</p>
@@ -329,7 +632,7 @@
       </div>
       <div class="masthead-meta">
         <div>Industrial Automation Procurement Desk</div>
-        <div><strong>Amman, Jordan · Al‑Khobar, Saudi Arabia</strong></div>
+        <div><strong>Amman, Jordan</strong></div>
         <span class="masthead-tag"><span class="dot"></span> Engineering software sourcing &amp; licensing support</span>
       </div>
     </div>
@@ -428,8 +731,8 @@
             <p class="source-note">Direct link to product download package.</p>
           </td>
           <td data-label="Further Information">
-            <a href="#specs">Full specification</a><br>
-            <a href="mailto:moahnnad@tamkeen-tec.com?subject=Support%20%2F%20Quotation%20request%20—%206ES7810-4CC11-0YA5%20(APCO)&body=Customer:%20Attarat%20Power%20Company%0AEmail:%20Attarat.procurement@ap.com.jo%0AArticle:%206ES7810-4CC11-0YA5">Contact Support / Request Quotation</a>
+            <a href="#specs" style="color:var(--tamkeen-primary-hex); font-weight: 500;">Full specification</a><br>
+            <a href="mailto:moahnnad@tamkeen-tec.com?subject=Support%20%2F%20Quotation%20request%20—%206ES7810-4CC11-0YA5%20(APCO)&body=Customer:%20Attarat%20Power%20Company%0AEmail:%20Attarat.procurement@ap.com.jo%0AArticle:%206ES7810-4CC11-0YA5" style="color:var(--tamkeen-primary-hex); font-weight: 500;">Contact Support / Request Quotation</a>
           </td>
         </tr>
       </tbody>
@@ -445,7 +748,7 @@
           </div>
           <div class="spec-item mono">
             <dt>License Number</dt>
-            <dd style="font-weight:600; color:var(--accent-ink);">10411000797172388334</dd>
+            <dd style="font-weight:600; color:var(--tamkeen-primary-hex);">10411000797172388334</dd>
           </div>
           <div class="spec-item">
             <dt>Product line</dt>
@@ -514,6 +817,18 @@
       errDiv.style.display = "block";
     }
     return false;
+  }
+
+  function togglePasswordVisibility() {
+    const pwInput = document.getElementById("password");
+    const icon = document.getElementById("eye-icon");
+    if (pwInput.type === "password") {
+      pwInput.type = "text";
+      icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+    } else {
+      pwInput.type = "password";
+      icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+    }
   }
 </script>
 
