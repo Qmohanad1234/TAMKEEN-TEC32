@@ -2079,66 +2079,27 @@ const WHATSAPP_PHONE_NUMBER_HTML =
 '+962797383980';
 
 /* =========================
-   SCROLL POSITION PRESERVATION
-   (fixes page jumping to top on refresh)
+   ALWAYS OPEN/REFRESH AT THE TOP
 ========================= */
 
-const SCROLL_POSITION_STORAGE_KEY =
-    'tamkeenScrollPosition_v1';
-
 if ('scrollRestoration' in history) {
-    /* Take manual control so the browser's own restore
-       attempt (which happens before our dynamic content
-       loads and shifts the layout) doesn't get overridden. */
+    /* Stop the browser from trying to restore the old
+       scroll position on refresh — we always want the
+       page to open at the top instead. */
     history.scrollRestoration = 'manual';
 }
 
-function saveScrollPosition() {
-    try {
-        sessionStorage.setItem(
-            SCROLL_POSITION_STORAGE_KEY,
-            String(window.scrollY)
-        );
-    } catch (e) {
-        /* sessionStorage unavailable — ignore */
-    }
+function forceScrollToTop() {
+    window.scrollTo(0, 0);
 }
 
-function restoreScrollPosition() {
-    try {
-        const savedY =
-            sessionStorage.getItem(
-                SCROLL_POSITION_STORAGE_KEY
-            );
+/* Run immediately (before layout/images finish) ... */
+forceScrollToTop();
 
-        if (savedY === null) return;
-
-        const targetY = parseInt(savedY, 10);
-
-        if (Number.isNaN(targetY) || targetY <= 0) return;
-
-        window.scrollTo({
-            top: targetY,
-            left: 0,
-            behavior: 'auto'
-        });
-    } catch (e) {
-        /* sessionStorage unavailable — ignore */
-    }
-}
-
-window.addEventListener(
-    'beforeunload',
-    saveScrollPosition
-);
-
-/* Also save periodically while scrolling, in case the
-   tab is closed/refreshed without a clean unload event
-   (common on mobile browsers). */
-window.addEventListener(
-    'pagehide',
-    saveScrollPosition
-);
+/* ...and again after the page and all its content
+   (images, fonts, dynamic sections) have fully loaded,
+   in case something shifted the scroll position. */
+window.addEventListener('load', forceScrollToTop);
 
 /* =========================
    SCROLL SPY (highlight current section in nav)
@@ -2644,10 +2605,11 @@ document.addEventListener(
 
         setupScrollSpy();
 
-        /* Restore scroll position now that the announcement
-           bar and brands ticker have finished inserting their
-           content and the page layout has settled. */
-        restoreScrollPosition();
+        /* Make sure we're still at the top now that the
+           announcement bar and brands ticker have finished
+           inserting their content and the page layout has
+           settled (these can otherwise cause a tiny jump). */
+        forceScrollToTop();
 
         /* =====================
            MOBILE MENU
