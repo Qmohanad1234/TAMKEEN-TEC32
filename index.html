@@ -2079,6 +2079,68 @@ const WHATSAPP_PHONE_NUMBER_HTML =
 '+962797383980';
 
 /* =========================
+   SCROLL POSITION PRESERVATION
+   (fixes page jumping to top on refresh)
+========================= */
+
+const SCROLL_POSITION_STORAGE_KEY =
+    'tamkeenScrollPosition_v1';
+
+if ('scrollRestoration' in history) {
+    /* Take manual control so the browser's own restore
+       attempt (which happens before our dynamic content
+       loads and shifts the layout) doesn't get overridden. */
+    history.scrollRestoration = 'manual';
+}
+
+function saveScrollPosition() {
+    try {
+        sessionStorage.setItem(
+            SCROLL_POSITION_STORAGE_KEY,
+            String(window.scrollY)
+        );
+    } catch (e) {
+        /* sessionStorage unavailable — ignore */
+    }
+}
+
+function restoreScrollPosition() {
+    try {
+        const savedY =
+            sessionStorage.getItem(
+                SCROLL_POSITION_STORAGE_KEY
+            );
+
+        if (savedY === null) return;
+
+        const targetY = parseInt(savedY, 10);
+
+        if (Number.isNaN(targetY) || targetY <= 0) return;
+
+        window.scrollTo({
+            top: targetY,
+            left: 0,
+            behavior: 'auto'
+        });
+    } catch (e) {
+        /* sessionStorage unavailable — ignore */
+    }
+}
+
+window.addEventListener(
+    'beforeunload',
+    saveScrollPosition
+);
+
+/* Also save periodically while scrolling, in case the
+   tab is closed/refreshed without a clean unload event
+   (common on mobile browsers). */
+window.addEventListener(
+    'pagehide',
+    saveScrollPosition
+);
+
+/* =========================
    SCROLL SPY (highlight current section in nav)
 ========================= */
 
@@ -2581,6 +2643,11 @@ document.addEventListener(
         setupBrandsTicker();
 
         setupScrollSpy();
+
+        /* Restore scroll position now that the announcement
+           bar and brands ticker have finished inserting their
+           content and the page layout has settled. */
+        restoreScrollPosition();
 
         /* =====================
            MOBILE MENU
