@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -694,6 +694,10 @@ footer {
     text-align: left;
     font-size: 0.95rem;
     animation: announcement-modal-in 0.4s ease both;
+}
+
+html[dir="rtl"] .announcement-modal {
+    text-align: right;
 }
 
 @keyframes announcement-modal-in {
@@ -1518,6 +1522,73 @@ type="button"
 </button>
 
 <!-- =========================
+     ANNOUNCEMENT MODAL
+========================= -->
+
+<div
+id="announcement-modal"
+class="announcement-modal"
+style="
+display:none;
+"
+>
+
+<p style="margin-bottom:1rem;">
+
+📣
+
+<strong data-translate-key="announcementModalTitle">
+New Training Available
+</strong>
+
+<br/>
+
+<span data-translate-key="announcementModalText">
+Registration is now open for our upcoming September and October PLC &amp; SCADA training sessions — reserve your seat today.
+</span>
+
+</p>
+
+<a
+id="announcement-modal-whatsapp-link"
+data-translate-key="announcementModalWhatsappText"
+rel="noopener noreferrer"
+style="
+display:inline-block;
+background-color:#25D366;
+color:white;
+padding:0.5rem 1rem;
+border-radius:6px;
+text-decoration:none;
+font-size:0.9rem;
+font-weight:600;
+margin-right:8px;
+"
+target="_blank"
+>
+Ask on WhatsApp
+</a>
+
+<button
+id="announcement-modal-close-btn"
+data-translate-key="announcementModalCloseText"
+type="button"
+style="
+background-color:#0075C9;
+color:white;
+padding:0.5rem 1rem;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:0.9rem;
+"
+>
+Close
+</button>
+
+</div>
+
+<!-- =========================
      TRANSLATIONS + JAVASCRIPT
 ========================= -->
 
@@ -1650,7 +1721,19 @@ whatsappDialogDescription:
 "Have questions or need support? We're here to help. Tap the button below to start a chat with our team.",
 
 whatsappDialogButtonText:
-"Chat on WhatsApp"
+"Chat on WhatsApp",
+
+announcementModalTitle:
+"New Training Available",
+
+announcementModalText:
+"Registration is now open for our upcoming September and October PLC & SCADA training sessions — reserve your seat today.",
+
+announcementModalWhatsappText:
+"Ask on WhatsApp",
+
+announcementModalCloseText:
+"Close"
 
 },
 
@@ -1788,7 +1871,19 @@ whatsappDialogDescription:
 "هل لديك أسئلة أو تحتاج إلى دعم؟ نحن هنا للمساعدة. اضغط على الزر أدناه لبدء محادثة مع فريقنا.",
 
 whatsappDialogButtonText:
-"الدردشة عبر واتساب"
+"الدردشة عبر واتساب",
+
+announcementModalTitle:
+"تدريب جديد متاح",
+
+announcementModalText:
+"التسجيل مفتوح الآن لدورات PLC و SCADA القادمة في سبتمبر وأكتوبر — احجز مقعدك اليوم.",
+
+announcementModalWhatsappText:
+"اسأل عبر واتساب",
+
+announcementModalCloseText:
+"إغلاق"
 
 },
 
@@ -1926,7 +2021,19 @@ whatsappDialogDescription:
 "¿Tienes preguntas o necesitas soporte? Estamos aquí para ayudarte. Toca el botón de abajo para iniciar un chat con nuestro equipo.",
 
 whatsappDialogButtonText:
-"Chatear por WhatsApp"
+"Chatear por WhatsApp",
+
+announcementModalTitle:
+"Nueva Formación Disponible",
+
+announcementModalText:
+"Las inscripciones ya están abiertas para nuestras próximas sesiones de formación en PLC y SCADA de septiembre y octubre — reserva tu plaza hoy.",
+
+announcementModalWhatsappText:
+"Preguntar por WhatsApp",
+
+announcementModalCloseText:
+"Cerrar"
 
 },
 
@@ -2064,13 +2171,25 @@ whatsappDialogDescription:
 "Hai domande o hai bisogno di supporto? Siamo qui per aiutarti. Tocca il pulsante qui sotto per iniziare una chat con il nostro team.",
 
 whatsappDialogButtonText:
-"Chatta su WhatsApp"
+"Chatta su WhatsApp",
+
+announcementModalTitle:
+"Nuova Formazione Disponibile",
+
+announcementModalText:
+"Le iscrizioni sono ora aperte per le prossime sessioni di formazione PLC e SCADA di settembre e ottobre — prenota il tuo posto oggi.",
+
+announcementModalWhatsappText:
+"Chiedi su WhatsApp",
+
+announcementModalCloseText:
+"Chiudi"
 
 }
 
 };
 
-let currentLanguage = 'en';
+let currentLanguage = 'ar';
 
 const ANNOUNCEMENT_STORAGE_KEY_HTML =
 'tamkeenAnnouncementDismissed_standalone_v1';
@@ -2326,6 +2445,8 @@ function updateTextContent() {
             : 'ltr';
 
     updateWhatsAppLanguage();
+
+    updateAnnouncementModalWhatsAppLink();
 }
 
 /* =========================
@@ -2364,6 +2485,34 @@ function updateWhatsAppLanguage() {
 }
 
 /* =========================
+   ANNOUNCEMENT MODAL WHATSAPP LINK
+========================= */
+
+function updateAnnouncementModalWhatsAppLink() {
+
+    const waLink =
+        document.getElementById(
+            'announcement-modal-whatsapp-link'
+        );
+
+    if (!waLink) return;
+
+    const trainingInquiryTextByLang = {
+        en: "I want to ask about the SCADA and PLC training course.",
+        ar: "أرغب بالاستفسار عن دورة PLC و SCADA التدريبية.",
+        es: "Quiero preguntar sobre el curso de formación de SCADA y PLC.",
+        it: "Vorrei informazioni sul corso di formazione SCADA e PLC."
+    };
+
+    const trainingInquiryText =
+        trainingInquiryTextByLang[currentLanguage] ||
+        trainingInquiryTextByLang.en;
+
+    waLink.href =
+        `https://wa.me/962797383980?text=${encodeURIComponent(trainingInquiryText)}`;
+}
+
+/* =========================
    INITIAL LANGUAGE
 ========================= */
 
@@ -2378,7 +2527,7 @@ function setInitialLanguage() {
     ) {
         currentLanguage = savedLanguage;
     } else {
-        currentLanguage = 'en';
+        currentLanguage = 'ar';
     }
 
     const languageSelect =
@@ -2861,6 +3010,46 @@ document.addEventListener(
         }
 
         /* =====================
+           ANNOUNCEMENT MODAL
+        ===================== */
+
+        const modal =
+            document.getElementById(
+                'announcement-modal'
+            );
+
+        window.addEventListener(
+            'load',
+            function () {
+
+                if (modal) {
+
+                    modal.style.display =
+                        'block';
+                }
+
+                const closeBtn =
+                    document.getElementById(
+                        'announcement-modal-close-btn'
+                    );
+
+                if (closeBtn) {
+
+                    closeBtn.addEventListener(
+                        'click',
+                        () => {
+
+                            modal.style.display =
+                                'none';
+                        }
+                    );
+                }
+
+                updateAnnouncementModalWhatsAppLink();
+            }
+        );
+
+        /* =====================
            RESIZE
         ===================== */
 
@@ -2880,121 +3069,6 @@ document.addEventListener(
         );
 
         adjustStickyNav();
-    }
-);
-
-</script>
-
-<!-- =========================
-     ANNOUNCEMENT MODAL
-========================= -->
-
-<div
-id="announcement-modal"
-class="announcement-modal"
-style="
-display:none;
-"
->
-
-<p style="margin-bottom:1rem;">
-
-📣
-
-<strong>
-New Training Available
-</strong>
-
-<br/>
-
-Registration is now open for our upcoming September and October PLC &amp; SCADA training sessions — reserve your seat today.
-
-</p>
-
-<a
-id="announcement-modal-whatsapp-link"
-rel="noopener noreferrer"
-style="
-display:inline-block;
-background-color:#25D366;
-color:white;
-padding:0.5rem 1rem;
-border-radius:6px;
-text-decoration:none;
-font-size:0.9rem;
-font-weight:600;
-margin-right:8px;
-"
-target="_blank"
->
-Ask on WhatsApp
-</a>
-
-<button
-id="announcement-modal-close-btn"
-type="button"
-style="
-background-color:#0075C9;
-color:white;
-padding:0.5rem 1rem;
-border:none;
-border-radius:6px;
-cursor:pointer;
-font-size:0.9rem;
-"
->
-Close
-</button>
-
-</div>
-
-<script>
-
-window.addEventListener(
-    'load',
-    function () {
-
-        const modal =
-            document.getElementById(
-                'announcement-modal'
-            );
-
-        if (modal) {
-
-            modal.style.display =
-                'block';
-        }
-
-        const closeBtn =
-            document.getElementById(
-                'announcement-modal-close-btn'
-            );
-
-        if (closeBtn) {
-
-            closeBtn.addEventListener(
-                'click',
-                () => {
-
-                    modal.style.display =
-                        'none';
-                }
-            );
-        }
-
-        const waLink =
-            document.getElementById(
-                'announcement-modal-whatsapp-link'
-            );
-
-        if (waLink) {
-
-            const trainingInquiryText =
-                "I want to ask about the SCADA and PLC training course.";
-
-            waLink.href =
-                `https://wa.me/962797383980?text=${encodeURIComponent(trainingInquiryText)}`;
-        }
     }
 );
 
