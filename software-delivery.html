@@ -504,56 +504,188 @@
   .download-btn .check { flex-shrink: 0; }
   .source-note { font-size: 11px; color: var(--muted-2); margin-top: 6px; max-width: 170px; }
 
+  details.spec {
+    margin-top: 22px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 31, 63, 0.06);
+  }
   details.spec summary {
     list-style: none;
     cursor: pointer;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: var(--tamkeen-primary-hex);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 22px;
+    font-size: 14px;
+    color: #ffffff;
     font-weight: 600;
-    background: #fafbfb;
-    border: 1px solid var(--line);
-    border-top: none;
+    letter-spacing: .01em;
+    background: linear-gradient(to right, var(--tamkeen-primary-dark), var(--tamkeen-accent-dark));
+    border: none;
   }
   details.spec summary::-webkit-details-marker { display: none; }
-  details.spec summary:before { content: "▸ "; }
-  details.spec[open] summary:before { content: "▾ "; }
+  .spec-chevron {
+    display: inline-flex;
+    transition: transform 0.25s ease;
+    opacity: 0.85;
+  }
+  details.spec[open] .spec-chevron { transform: rotate(90deg); }
+
   .spec-body {
     border: 1px solid var(--line);
     border-top: none;
     background: var(--surface);
-    padding: 20px 24px 24px;
+    padding: 0;
   }
+
+  .spec-intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 24px;
+    background: linear-gradient(180deg, #f7fafc 0%, var(--surface) 100%);
+    border-bottom: 1px solid var(--line);
+  }
+  .spec-intro-title {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--tamkeen-text-hex);
+    margin: 0;
+  }
+  .spec-intro-sub {
+    font-size: 12px;
+    color: var(--muted-2);
+    margin: 2px 0 0;
+  }
+  .spec-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--tamkeen-primary-hex);
+    background: #eaf4fc;
+    border: 1px solid #cfe4f5;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  .spec-section {
+    padding: 22px 24px;
+  }
+  .spec-section + .spec-section {
+    border-top: 1px solid var(--line);
+  }
+  .spec-section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-heading);
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    font-weight: 700;
+    color: var(--tamkeen-accent-dark);
+    margin: 0 0 16px;
+  }
+  .spec-section-label .icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: #e6f5f0;
+    color: var(--tamkeen-accent-dark);
+    flex-shrink: 0;
+  }
+
   .spec-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px 28px;
-    margin-top: 4px;
+    gap: 16px 24px;
+  }
+  .spec-item {
+    background: linear-gradient(180deg, #fbfcfd 0%, #f6f9fa 100%);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 13px 16px;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .spec-item:hover {
+    border-color: var(--line-strong);
+    box-shadow: 0 4px 10px rgba(0, 31, 63, 0.06);
+    transform: translateY(-1px);
   }
   .spec-item dt {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: .04em;
+    letter-spacing: .06em;
     color: var(--muted-2);
-    font-weight: 600;
-    margin-bottom: 4px;
+    font-weight: 700;
+    margin-bottom: 6px;
   }
   .spec-item dd {
     margin: 0;
-    font-size: 13px;
+    font-size: 13.5px;
     color: var(--tamkeen-text-hex);
+    font-weight: 500;
+    line-height: 1.5;
   }
-  .spec-item.mono dd { font-family: var(--font-mono); }
+  .spec-item.mono dd { font-family: var(--font-mono); font-weight: 600; letter-spacing: -0.01em; }
+  .spec-item.highlight {
+    background: linear-gradient(180deg, #eefaf3 0%, #e6f4ea 100%);
+    border-color: #bfe3cd;
+  }
+  .spec-item.highlight dd {
+    color: var(--good);
+    font-weight: 700;
+  }
+  .spec-item.full { grid-column: 1 / -1; }
 
-  .spec-lang { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+  .spec-lang { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
   .lang-tag {
     font-size: 11px;
     font-family: var(--font-mono);
-    background: #eef1f2;
-    color: var(--muted);
-    padding: 2px 7px;
-    border-radius: 4px;
-    border: 1px solid var(--line);
+    font-weight: 600;
+    background: #ffffff;
+    color: var(--tamkeen-primary-hex);
+    padding: 4px 10px;
+    border-radius: 5px;
+    border: 1px solid #cfe4f5;
+  }
+
+  .spec-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 18px 24px;
+    background: linear-gradient(180deg, #fafbfb 0%, #f4f6f7 100%);
+    border-top: 1px solid var(--line);
+    font-size: 11.5px;
+    color: var(--muted-2);
+  }
+  .spec-footer strong { color: var(--muted); font-weight: 600; }
+  .spec-footer-refs { display: flex; flex-direction: column; gap: 4px; }
+  .spec-seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    color: var(--good);
+    background: var(--good-bg);
+    border: 1px solid #bfe3cd;
+    padding: 7px 14px;
+    border-radius: 999px;
+    text-transform: uppercase;
   }
 
   footer {
@@ -596,13 +728,13 @@
       <div class="auth-field">
         <label for="username">Username</label>
         <div class="input-wrapper">
-          <input type="text" id="username" required placeholder="Enter username" autocomplete="username">
+          <input type="text" id="username" required placeholder="Enter PO Number" autocomplete="username">
         </div>
       </div>
       <div class="auth-field">
         <label for="password">Password</label>
         <div class="input-wrapper">
-          <input type="password" id="password" required placeholder="Enter password" autocomplete="current-password">
+          <input type="password" id="password" required placeholder="Enter PO Number" autocomplete="current-password">
           <button type="button" class="toggle-pw-btn" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
             <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -646,7 +778,7 @@
 
   <div class="subnav">
     <div class="subnav-inner">
-      <a href="https://drive.google.com/file/d/1BJQJM4vtoX7cOVXthNjAdyl_X4BF68tm/view?usp=sharing" target="_blank" rel="noopener" class="active">Product Download</a>
+      <a href="https://mega.nz/file/8dBx3BjZ#eRA6BFbWC_gRIgMY61kP_tfG0if_9Xf8VgGn4QRv1HA" target="_blank" rel="noopener" class="active">Product Download</a>
       <a href="#specs">License Overview</a>
       <a href="mailto:moahnnad@tamkeen-tec.com?subject=Contract%20Query%20%E2%80%94%20APCO-JO-88210">Support &amp; Contracts ↗</a>
     </div>
@@ -667,6 +799,10 @@
       <div class="customer-item">
         <dt>Account ID</dt>
         <dd style="font-family: var(--font-mono);">APCO‑JO‑88210</dd>
+      </div>
+      <div class="customer-item">
+        <dt>PO Number</dt>
+        <dd style="font-family: var(--font-mono); color: var(--tamkeen-primary-hex);">OM107141</dd>
       </div>
       <div class="customer-item">
         <dt>Project / Region</dt>
@@ -716,7 +852,7 @@
             </span>
           </td>
           <td data-label="Software & Documents">
-            <a class="download-btn" href="https://drive.google.com/file/d/1BJQJM4vtoX7cOVXthNjAdyl_X4BF68tm/view?usp=sharing" target="_blank" rel="noopener">
+            <a class="download-btn" href="https://mega.nz/file/8dBx3BjZ#eRA6BFbWC_gRIgMY61kP_tfG0if_9Xf8VgGn4QRv1HA" target="_blank" rel="noopener">
               <span class="left">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                   <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -739,54 +875,106 @@
     </table>
 
     <details class="spec" id="specs" open>
-      <summary>Product specification — SIMATIC STEP 7 V5.6 SP1</summary>
+      <summary>
+        <span>Product Specification — SIMATIC STEP 7 V5.6 SP1</span>
+        <svg class="spec-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </summary>
       <div class="spec-body">
-        <div class="spec-grid">
-          <div class="spec-item mono">
-            <dt>Article No.</dt>
-            <dd>6ES7810‑4CC11‑0YA5</dd>
+
+        <div class="spec-intro">
+          <div>
+            <p class="spec-intro-title">SIMATIC S7 Engineering Software</p>
+            <p class="spec-intro-sub">Complete licensing &amp; compatibility reference for this delivery</p>
           </div>
-          <div class="spec-item mono">
-            <dt>License Number</dt>
-            <dd style="font-weight:600; color:var(--tamkeen-primary-hex);">10411000797172388334</dd>
-          </div>
-          <div class="spec-item">
-            <dt>Product line</dt>
-            <dd>SIMATIC S7 Engineering Software</dd>
-          </div>
-          <div class="spec-item">
-            <dt>License type</dt>
-            <dd>Floating license, 1 user</dd>
-          </div>
-          <div class="spec-item">
-            <dt>Delivery media</dt>
-            <dd>Software, documentation &amp; license key via digital download</dd>
-          </div>
-          <div class="spec-item">
-            <dt>Software class</dt>
-            <dd>Class A</dd>
-          </div>
-          <div class="spec-item">
-            <dt>Reference hardware</dt>
-            <dd>SIMATIC S7‑300 / S7‑400, C7</dd>
-          </div>
-          <div class="spec-item" style="grid-column:1/-1">
-            <dt>Compatible operating systems</dt>
-            <dd>Windows 7 SP1 · Windows 10 Professional / Enterprise · Windows Server 2008 R2 SP1 · Windows Server 2012 R2 · Windows Server 2016</dd>
-          </div>
-          <div class="spec-item" style="grid-column:1/-1">
-            <dt>Available languages</dt>
-            <dd>
-              <div class="spec-lang">
-                <span class="lang-tag">DE</span>
-                <span class="lang-tag">EN</span>
-                <span class="lang-tag">FR</span>
-                <span class="lang-tag">ES</span>
-                <span class="lang-tag">IT</span>
-              </div>
-            </dd>
+          <span class="spec-badge">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            License Verified
+          </span>
+        </div>
+
+        <div class="spec-section">
+          <p class="spec-section-label">
+            <span class="icon-circle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg></span>
+            Identification
+          </p>
+          <div class="spec-grid">
+            <div class="spec-item mono">
+              <dt>Article No.</dt>
+              <dd>6ES7810‑4CC11‑0YA5</dd>
+            </div>
+            <div class="spec-item mono highlight">
+              <dt>License Number</dt>
+              <dd>10411000797172388334</dd>
+            </div>
+            <div class="spec-item">
+              <dt>Product Line</dt>
+              <dd>SIMATIC S7 Engineering Software</dd>
+            </div>
           </div>
         </div>
+
+        <div class="spec-section">
+          <p class="spec-section-label">
+            <span class="icon-circle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            Licensing &amp; Delivery
+          </p>
+          <div class="spec-grid">
+            <div class="spec-item">
+              <dt>License Type</dt>
+              <dd>Floating license, 1 user</dd>
+            </div>
+            <div class="spec-item">
+              <dt>Software Class</dt>
+              <dd>Class A</dd>
+            </div>
+            <div class="spec-item">
+              <dt>Delivery Media</dt>
+              <dd>Software, documentation &amp; license key via digital download</dd>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-section">
+          <p class="spec-section-label">
+            <span class="icon-circle"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+            Compatibility
+          </p>
+          <div class="spec-grid">
+            <div class="spec-item">
+              <dt>Reference Hardware</dt>
+              <dd>SIMATIC S7‑300 / S7‑400, C7</dd>
+            </div>
+            <div class="spec-item full">
+              <dt>Compatible Operating Systems</dt>
+              <dd>Windows 7 SP1 · Windows 10 Professional / Enterprise · Windows Server 2008 R2 SP1 · Windows Server 2012 R2 · Windows Server 2016</dd>
+            </div>
+            <div class="spec-item full">
+              <dt>Available Languages</dt>
+              <dd>
+                <div class="spec-lang">
+                  <span class="lang-tag">DE</span>
+                  <span class="lang-tag">EN</span>
+                  <span class="lang-tag">FR</span>
+                  <span class="lang-tag">ES</span>
+                  <span class="lang-tag">IT</span>
+                </div>
+              </dd>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-footer">
+          <div class="spec-footer-refs">
+            <span>Delivery Note <strong>TK‑ENG‑SW‑0142</strong></span>
+            <span>PO Number <strong>OM107141</strong></span>
+            <span>Customer <strong>Attarat Power Company (APCO‑JO‑88210)</strong></span>
+          </div>
+          <span class="spec-seal">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Certified Delivery
+          </span>
+        </div>
+
       </div>
     </details>
 
@@ -800,8 +988,8 @@
 <!-- AUTH SCRIPT -->
 <script>
   const VALID_CREDENTIALS = {
-    "Attarat.procurement@ap.com.jo": "SIMATICMANAGER5.6",
-    "1": "1"
+    "OM107141": "OM107141",
+    "admin": "admin"
   };
 
   function handleLogin(e) {
